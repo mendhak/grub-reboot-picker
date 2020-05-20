@@ -23,13 +23,13 @@ pyinstaller -F -w --clean  test.py
 
 
 TODO
-Center it on the screen
-Icon for this application
-Run in system tray
-System tray application
-Right click menu for gnome
-Create executable
-Create deb:
+Center it on the screen  
+Icon for this application  
+Run in system tray  
+System tray application  
+Right click menu for gnome  
+Create executable  
+Create deb:  
 https://stackoverflow.com/questions/17401381/debianzing-a-python-program-to-get-a-deb
 https://github.com/cpbotha/stdeb-minimal-example
 
