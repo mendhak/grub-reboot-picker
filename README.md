@@ -1,5 +1,5 @@
 
-sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-3.0
+sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-3.0 python3-stdeb fakeroot python-all dh-python
 
 
 
@@ -38,7 +38,7 @@ https://blog.aaronhktan.com/posts/2018/05/14/pyqt5-pyinstaller-executable
 
 Create deb, also: 
 http://dbalakirev.github.io/2015/08/21/deb-pkg/
-
+http://shallowsky.com/blog/programming/python-debian-packages-w-stdeb.html
 
 create folder structure, then
 
