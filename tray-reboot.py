@@ -5,21 +5,36 @@ import gi
 gi.require_version("Gtk", "3.0")
 gi.require_version('AppIndicator3', '0.1')
 from gi.repository import Gtk, AppIndicator3, GLib
-import random, string
+import re
 
 icon_name="un-reboot"
 
 def on_button_clicked(widget):
     print("Clicked!")
 
+def get_grub_entries():
+  pattern = re.compile("menuentry '([^']*)'")
+  grub_entries = []
+  grub_entries.clear()
+
+  for i, line in enumerate(open('/boot/grub/grub.cfg')):
+      for match in re.finditer(pattern, line):
+          grub_entries.append(match.group(1))
+  return grub_entries
+
 def menu():
   menu = Gtk.Menu()
   
-  randomstr = ''.join([random.choice(string.ascii_letters + string.digits) for n in range(32)])
+  grub_entries = get_grub_entries()
 
-  command_one = Gtk.MenuItem(label=randomstr)
-  command_one.connect('activate', note)
-  menu.append(command_one)
+  for grub_entry in grub_entries:
+    command_g = Gtk.MenuItem(label=grub_entry)
+    command_g.connect('activate', note, grub_entry, 4)
+    menu.append(command_g)
+
+  # command_one = Gtk.MenuItem(label=randomstr)
+  # command_one.connect('activate', note)
+  # menu.append(command_one)
 
   exittray = Gtk.MenuItem(label='Exit Tray')
   exittray.connect('activate', quit)
@@ -28,8 +43,9 @@ def menu():
   menu.show_all()
   return menu
   
-def note(_):
-  os.system("gedit $HOME/Documents/notes.txt")
+def note(menuitem, grub_entry, position):
+  print(grub_entry, position)
+  #os.system("gedit $HOME/Documents/notes.txt")
 
 
 def quit(_):
@@ -80,5 +96,6 @@ GLib.timeout_add(5000, reset_menu)
 win.set_default_size(500,500)
 win.show_all()
 
+print(get_grub_entries())
 
 Gtk.main()
