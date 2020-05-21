@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/pkexec /usr/bin/python3
 
 import os
 import gi
@@ -29,7 +29,7 @@ def menu():
 
   for grub_entry in grub_entries:
     command_g = Gtk.MenuItem(label=grub_entry)
-    command_g.connect('activate', note, grub_entry, 4)
+    command_g.connect('activate', note, grub_entry)
     menu.append(command_g)
 
   # command_one = Gtk.MenuItem(label=randomstr)
@@ -43,8 +43,9 @@ def menu():
   menu.show_all()
   return menu
   
-def note(menuitem, grub_entry, position):
-  print(grub_entry, position)
+def note(menuitem, grub_entry):
+  print(grub_entry)
+  os.system("pkexec grub-reboot '{}' && sleep 1 && pkexec reboot".format(grub_entry))
   #os.system("gedit $HOME/Documents/notes.txt")
 
 
@@ -91,7 +92,7 @@ def reset_menu():
   indicator.set_menu(menu())
   return True
 
-GLib.timeout_add(5000, reset_menu)
+#GLib.timeout_add(5000, reset_menu)
 
 win.set_default_size(500,500)
 win.show_all()

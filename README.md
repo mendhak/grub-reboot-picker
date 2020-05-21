@@ -29,6 +29,10 @@ Run in system tray
 System tray application  
 Right click menu for gnome  
 Create executable  
+
+Run via pkexec policykit without password
+https://unix.stackexchange.com/questions/203136/how-do-i-run-gui-applications-as-root-by-using-pkexec
+
 Create deb:  
 https://stackoverflow.com/questions/17401381/debianzing-a-python-program-to-get-a-deb
 https://github.com/cpbotha/stdeb-minimal-example
@@ -43,3 +47,4 @@ http://shallowsky.com/blog/programming/python-debian-packages-w-stdeb.html
 create folder structure, then
 
 dpkg-deb --build helloworld_0.0.4
+
