@@ -8,7 +8,7 @@ grub_entries = {}
 grub_entries.clear()
 grub_entries['menuitems'] = []
 menu_entry_match = None
-current_submenu = False
+current_submenu = None
 submenu_entry_match = None
 
 
