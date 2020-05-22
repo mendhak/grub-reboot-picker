@@ -13,24 +13,70 @@ def on_button_clicked(widget):
     print("Clicked!")
 
 def get_grub_entries():
-  pattern = re.compile("menuentry '([^']*)'")
-  grub_entries = []
+  pattern = re.compile("^menuentry '([^']*)'")
+  grub_entries = {}
   grub_entries.clear()
+  grub_entries['menuitems'] = []
 
   for i, line in enumerate(open('/boot/grub/grub.cfg')):
       for match in re.finditer(pattern, line):
-          grub_entries.append(match.group(1))
+          grub_entry = {}
+          grub_entry['name'] = match.group(1)
+          grub_entries['menuitems'].append(grub_entry)
+          #grub_entries.append(match.group(1))
   return grub_entries
+
+def get_grub_entries_with_submenus():
+    menu_pattern = re.compile("^menuentry '([^']*)'")
+    submenu_pattern = re.compile("^\\s+menuentry '([^']*)'")
+
+    grub_entries = {}
+    grub_entries.clear()
+    grub_entries['menuitems'] = []
+    menu_entry_match = None
+    current_submenu = False
+    submenu_entry_match = None
+
+
+    for i, line in enumerate(open('/boot/grub/grub.cfg')):
+        menu_entry_match = re.match(menu_pattern, line)
+        if menu_entry_match:
+            grub_entry = {}
+            grub_entry['name'] = menu_entry_match.group(1)
+            grub_entries['menuitems'].append(grub_entry)
+            #print(menu_entry_match.group(1))
+            current_submenu = grub_entry
+            current_submenu['submenuitems'] = []
+            continue
+
+        if current_submenu:
+            submenu_entry_match = re.match(submenu_pattern, line)
+            if submenu_entry_match:
+                #print(submenu_entry_match.group(1))
+                grub_entry = {}
+                grub_entry['name'] = submenu_entry_match.group(1)
+                current_submenu['submenuitems'].append(grub_entry)
+    return grub_entries                
 
 def menu():
   menu = Gtk.Menu()
   
-  grub_entries = get_grub_entries()
+  grub_entries = get_grub_entries_with_submenus()
+  print(grub_entries)
 
-  for grub_entry in grub_entries:
-    command_g = Gtk.MenuItem(label=grub_entry)
-    command_g.connect('activate', note, grub_entry)
-    menu.append(command_g)
+  for grub_entry in grub_entries['menuitems']:
+    menuitem = Gtk.MenuItem(label=grub_entry['name'])
+    if len(grub_entry.get('submenuitems',[])) == 0:
+      menuitem.connect('activate', note, grub_entry)
+    submenu = Gtk.Menu()
+    for grub_entry_submenuitem in grub_entry.get('submenuitems',[]):
+      print(grub_entry_submenuitem)
+      submenu_item = Gtk.MenuItem(label=grub_entry_submenuitem['name'])
+      submenu_item.connect('activate', note, grub_entry_submenuitem, grub_entry)
+      submenu.append(submenu_item)
+    menuitem.set_submenu(submenu)
+      
+    menu.append(menuitem)
 
   # command_one = Gtk.MenuItem(label=randomstr)
   # command_one.connect('activate', note)
@@ -43,39 +89,41 @@ def menu():
   menu.show_all()
   return menu
   
-def note(menuitem, grub_entry):
+def note(menuitem, grub_entry, parent_grub_entry=None):
   print(grub_entry)
-  os.system("pkexec grub-reboot '{}' && sleep 1 && pkexec reboot".format(grub_entry))
+  if parent_grub_entry is not None:
+    print(parent_grub_entry) 
+  #os.system("pkexec grub-reboot '{}' && sleep 1 && pkexec reboot".format(grub_entry))
   #os.system("gedit $HOME/Documents/notes.txt")
 
 
 def quit(_):
   Gtk.main_quit()    
 
-win = Gtk.Window()
-win.connect("destroy", Gtk.main_quit)
-#win.set_icon_from_file("logo.svg")
-win.set_icon_name(icon_name)
-win.set_position(Gtk.WindowPosition.CENTER_ALWAYS)
+# win = Gtk.Window()
+# win.connect("destroy", Gtk.main_quit)
+# #win.set_icon_from_file("logo.svg")
+# win.set_icon_name(icon_name)
+# win.set_position(Gtk.WindowPosition.CENTER_ALWAYS)
 
 
-grid = Gtk.Grid()
-win.add(grid)
+# grid = Gtk.Grid()
+# win.add(grid)
 
 
-button = Gtk.Button(label="Message")
-button.connect("clicked", on_button_clicked)
-button.set_size_request(300,100)
-#win.add(button)
-grid.add(button)
+# button = Gtk.Button(label="Message")
+# button.connect("clicked", on_button_clicked)
+# button.set_size_request(300,100)
+# #win.add(button)
+# grid.add(button)
 
 
-label = Gtk.Label()
-label.set_label("Hello World")
-label.set_angle(25)
-label.set_halign(Gtk.Align.END)
-grid.attach(label, 1, 2, 2, 1)
-# win.add(label)
+# label = Gtk.Label()
+# label.set_label("Hello World")
+# label.set_angle(25)
+# label.set_halign(Gtk.Align.END)
+# grid.attach(label, 1, 2, 2, 1)
+# # win.add(label)
 
 
 # statusicon = Gtk.StatusIcon()
@@ -94,9 +142,9 @@ def reset_menu():
 
 #GLib.timeout_add(5000, reset_menu)
 
-win.set_default_size(500,500)
-win.show_all()
+# win.set_default_size(500,500)
+# win.show_all()
 
-print(get_grub_entries())
+
 
 Gtk.main()
