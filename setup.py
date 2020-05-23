@@ -23,7 +23,7 @@ setuptools.setup(
     name="grub-reboot-picker",
     version="0.0.2",
     author="Mendhak",
-    author_email="mendhak@gmail.com",
+    author_email="mendhak@users.noreply.github.com",
     description="Tray application, reboot into different OSes.",
     long_description="""A tray indicator application that lets you reboot
     into different OSes from its menu.
@@ -34,6 +34,7 @@ setuptools.setup(
     long_description_content_type="text/plain",
     url="https://github.com/mendhak/grub-reboot-picker",
     packages=['src'],
+    include_package_data=True,
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
