@@ -103,3 +103,6 @@ Other references
 * https://blog.aaronhktan.com/posts/2018/05/14/pyqt5-pyinstaller-executable
 * http://dbalakirev.github.io/2015/08/21/deb-pkg/
 * http://shallowsky.com/blog/programming/python-debian-packages-w-stdeb.html
+
+Hosting DEB on Github Pages:  
+https://pmateusz.github.io/linux/2017/06/30/linux-secure-apt-repository.html
