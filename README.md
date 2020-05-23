@@ -17,6 +17,13 @@ cd src
 Using [setuptools](https://setuptools.readthedocs.io/en/latest/) with [stdeb](https://github.com/astraw/stdeb).  
 This produces a source package, and then creates a `.deb` package in the `deb_dist` directory. 
 
+First, some build dependencies:
+
+```
+sudo apt install python3-stdeb fakeroot python-all dh-python
+```
+
+Then to build:
 
 ```
 # Clean everything
@@ -28,6 +35,10 @@ lintian deb_dist/grub-reboot-picker_0.0.2-1_all.deb
 # Look at information about this deb
 dpkg -I deb_dist/grub-reboot-picker_0.0.2-1_all.deb
 ```
+
+The setup.py is the starting point, which runs setuptools.  Which uses stdeb to run a command to create the .deb.  
+[The setup.cfg](https://github.com/astraw/stdeb#stdeb-distutils-command-options) contains arguments to use for the package generation, both for setuputils as well as stdeb for things like Debian control file, changelog, etc.  
+
 
 TODO: put the .deb somewhere! 
 
