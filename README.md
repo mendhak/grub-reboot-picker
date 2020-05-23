@@ -20,7 +20,7 @@ This produces a source package, and then creates a `.deb` package in the `deb_di
 First, some build dependencies:
 
 ```
-sudo apt install python3-stdeb fakeroot python-all dh-python
+sudo apt install python3-stdeb fakeroot python-all dh-python lintian
 ```
 
 Then to build:
