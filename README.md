@@ -2,6 +2,15 @@
 
 App indicator, tray icon, to reboot into other grub entries.  Basically it's a wrapper around grub-reboot. Ubuntu 20.04.  
 
+Current way of running it is 
+
+```
+sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-3.0 gir1.2-appindicator3-0.1
+./tray.py
+```
+
+
+
 
 ### Dependencies so far
 
