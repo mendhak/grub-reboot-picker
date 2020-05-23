@@ -33,10 +33,8 @@ setuptools.setup(
     long_description_content_type="text/plain",
     url="https://github.com/mendhak/grub-reboot-picker",
     packages=['src'],
-    include_package_data=False,
-    package_data={
-        "": ["../CHANGELOG.md"]
-    },
+    include_package_data=True,
+    
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
@@ -45,6 +43,9 @@ setuptools.setup(
     python_requires='>=3.6',
     install_requires=[],
     data_files=[
-        ('/usr/sbin/', ['tmp/grub-reboot-picker'])
+        ('/usr/sbin/', ['tmp/grub-reboot-picker']),
+        ('/usr/share/polkit-1/actions/', ['com.mendhak.grubrebootpicker.policy']),
+        ('/etc/xdg/autostart/', ['com.mendhak.grubrebootpicker.desktop']),
+        ('/usr/share/applications/', ['com.mendhak.grubrebootpicker.desktop'])
     ]
 )

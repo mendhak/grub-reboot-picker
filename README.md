@@ -37,7 +37,8 @@ dpkg -I deb_dist/grub-reboot-picker_0.0.2-1_all.deb
 ```
 
 The setup.py is the starting point, which runs setuptools.  Which uses stdeb to run a command to create the .deb.  
-[The setup.cfg](https://github.com/astraw/stdeb#stdeb-distutils-command-options) contains arguments to use for the package generation, both for setuputils as well as stdeb for things like Debian control file, changelog, etc.  
+[The `setup.cfg`](https://github.com/astraw/stdeb#stdeb-distutils-command-options) contains arguments to use for the package generation, both for setuputils as well as stdeb for things like Debian control file, changelog, etc. 
+The `MANIFEST.in` includes 
 I've modified setup.py a bit to generate Debian's changelog from the CHANGELOG.md, it's very sensitive to spacing.  
 
 TODO: put the .deb somewhere! 
