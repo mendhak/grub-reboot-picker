@@ -1,5 +1,17 @@
+## WIP 
 
-sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-3.0 python3-stdeb fakeroot python-all dh-python
+App indicator, tray icon, to reboot into whatever grub allows.  Basically a wrapper around grub-reboot. 
+
+
+# Dependencies so far
+
+For the script:
+sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-3.0 gir1.2-appindicator3-0.1
+
+
+To build: 
+
+python3-stdeb fakeroot python-all dh-python
 
 
 
