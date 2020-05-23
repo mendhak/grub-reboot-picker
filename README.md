@@ -6,22 +6,37 @@ Current way of running it is
 
 ```
 sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-3.0 gir1.2-appindicator3-0.1
-./tray.py
+cd src
+./grub-reboot-picker.py
 ```
 
 
-
-
-### Dependencies so far
-
-To run the script:
-
-```
-sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-3.0 gir1.2-appindicator3-0.1
-```
 
 ## Building a distributable
 
+Using [setuptools](https://setuptools.readthedocs.io/en/latest/) with [stdeb](https://github.com/astraw/stdeb).  
+This produces a source package, and then creates a `.deb` package in the `deb_dist` directory. 
+
+
+```
+# Clean everything
+rm -rf deb_dist dist *.tar.gz *.egg* build tmp
+# Create the source and deb
+python3 setup.py --command-packages=stdeb.command bdist_deb
+# Run a lint against this deb
+lintian deb_dist/grub-reboot-picker_0.0.2-1_all.deb
+# Look at information about this deb
+dpkg -I deb_dist/grub-reboot-picker_0.0.2-1_all.deb
+```
+
+TODO: put the .deb somewhere! 
+
+
+
+
+------
+
+### Notes:
 
 Hard to figure out what to do here.  So many options. 
 
@@ -60,16 +75,6 @@ sudo apt install python3-stdeb fakeroot python-all dh-python
 
 
 
-
-
-### How to run the application
-
-```
-./tray.py
-```
-
-
-
 ### TODOs
 
 TODO
@@ -94,9 +99,11 @@ Create deb, also:
 http://dbalakirev.github.io/2015/08/21/deb-pkg/
 http://shallowsky.com/blog/programming/python-debian-packages-w-stdeb.html
 
-create folder structure, then
 
-dpkg-deb --build helloworld_0.0.4
+Creating by hand:  
+https://blog.packagecloud.io/eng/2015/07/14/using-dh-make-to-prepare-debian-packages/  
+https://blog.packagecloud.io/eng/2016/12/15/howto-build-debian-package-containing-simple-shell-scripts/
+
 
 Other references
 
