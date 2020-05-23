@@ -1,11 +1,48 @@
-### WIP 
+# Grub Reboot Picker Tray Application
 
-App indicator, tray icon, to reboot into other grub entries.  Basically it's a wrapper around grub-reboot. Ubuntu 20.04.  
+This utility is an app indicator (tray icon) to help you reboot into other OSes.  Instead of picking the OS you want at the grub menu, you can just preselect it from the menu here. 
+Basically it's a wrapper around `grub-reboot`.` I've only tested this on Ubuntu 20.04. 
 
-Current way of running it is 
+
+## Install it
+
+Get the latst `.deb` from Releases and install it. 
 
 ```
+wget https://github.com/mendhak/grub-reboot-picker/releases/latest/download/grub-reboot-picker.deb
+sudo apt install ./grub-reboot-picker.deb
+```
+
+## Run it
+
+The application will auto start the next time you log in to Ubuntu.  
+You can also launch it directly by searching for `Grub Reboot Picker` in Activities
+
+
+## Use it
+
+Click on the application icon.  
+A menu with grub entries will appear.  
+Click one of the entries.  
+In a moment, Ubuntu will reboot.  
+The grub menu item you chose should be preselected. 
+
+
+# Developing locally
+
+## Running it from this repo
+
+You can run this application directly from this git repo.  
+
+First get the dependencies
+```
 sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-3.0 gir1.2-appindicator3-0.1
+
+```
+
+Clone this repo, then run the python script. 
+
+```
 cd src
 ./grub-reboot-picker.py
 ```
@@ -41,87 +78,14 @@ The setup.py is the starting point, which runs setuptools.  Which uses stdeb to 
 The `MANIFEST.in` includes 
 I've modified setup.py a bit to generate Debian's changelog from the CHANGELOG.md, it's very sensitive to spacing.  
 
-TODO: put the .deb somewhere! 
+# TODO
 
+Determine if LaunchPad PPA is feasible   
+Or [hosting an apt repository on Github Pages](https://pmateusz.github.io/linux/2017/06/30/linux-secure-apt-repository.html)
 
+Sign the .deb if possible  
 
+Configuration file or Configuration screen: 
+* Single level or double level menu items
+* Nicknames for menu items  
 
-------
-
-### Notes:
-
-Hard to figure out what to do here.  So many options. 
-
-### pyinstaller
-
-`pyinstaller` can create a single executable.  To build a single executable: 
-
-```
-pyinstaller -F -w --clean  tray.py
-```
-
-But the [size is very large](https://github.com/pyinstaller/pyinstaller/issues/2337), about 200+MB.  
-
-Abandoned. 
-
-### setuptools
-
-
-I could build a .deb using Python's recommended [setuptools](https://packaging.python.org/tutorials/packaging-projects/). 
-
-
-
-References:
-* https://stackoverflow.com/questions/17401381/debianzing-a-python-program-to-get-a-deb
-* https://github.com/cpbotha/stdeb-minimal-example
-* http://shallowsky.com/blog/programming/python-debian-packages-w-stdeb.html
-
-
-Dependencies needed to build: 
-
-```
-sudo apt install python3-stdeb fakeroot python-all dh-python
-```
-
-
-
-
-
-### TODOs
-
-TODO
-Center it on the screen 
-Icon for this application  
-Run in system tray  
-System tray application  
-Right click menu for gnome  
-Create executable  
-
-Run via pkexec policykit without password
-https://unix.stackexchange.com/questions/203136/how-do-i-run-gui-applications-as-root-by-using-pkexec
-
-Create deb:  
-https://stackoverflow.com/questions/17401381/debianzing-a-python-program-to-get-a-deb
-https://github.com/cpbotha/stdeb-minimal-example
-
-Create deb another way:
-https://blog.aaronhktan.com/posts/2018/05/14/pyqt5-pyinstaller-executable
-
-Create deb, also: 
-http://dbalakirev.github.io/2015/08/21/deb-pkg/
-http://shallowsky.com/blog/programming/python-debian-packages-w-stdeb.html
-
-
-Creating by hand:  
-https://blog.packagecloud.io/eng/2015/07/14/using-dh-make-to-prepare-debian-packages/  
-https://blog.packagecloud.io/eng/2016/12/15/howto-build-debian-package-containing-simple-shell-scripts/
-
-
-Other references
-
-* https://blog.aaronhktan.com/posts/2018/05/14/pyqt5-pyinstaller-executable
-* http://dbalakirev.github.io/2015/08/21/deb-pkg/
-* http://shallowsky.com/blog/programming/python-debian-packages-w-stdeb.html
-
-Hosting DEB on Github Pages:  
-https://pmateusz.github.io/linux/2017/06/30/linux-secure-apt-repository.html
