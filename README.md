@@ -25,9 +25,24 @@ You can also launch it directly by searching for `Grub Reboot Picker` in Activit
 Click on the application icon.  
 A menu with grub entries will appear.  
 Click one of the entries.  
-In a moment, Ubuntu will reboot.  
+After a moment, Ubuntu will reboot.  
 The grub menu item you chose should be preselected. 
 
+
+# TODO
+
+Configuration file or Configuration screen: 
+* Top level or double level menu items
+* Nicknames for menu items  
+
+Run a single instance of the application
+
+Determine if LaunchPad PPA is feasible, to get automatic updates. 
+Or [hosting an apt repository on Github Pages](https://pmateusz.github.io/linux/2017/06/30/linux-secure-apt-repository.html)
+
+Don't hardcode the current version number, get it from tag name or env variable
+
+Sign the .deb if possible  
 
 # Developing locally
 
@@ -78,15 +93,4 @@ The setup.py is the starting point, which runs setuptools.  Which uses stdeb to 
 [The `setup.cfg`](https://github.com/astraw/stdeb#stdeb-distutils-command-options) contains arguments to use for the package generation, both for setuputils as well as stdeb for things like Debian control file, changelog, etc. 
 The `MANIFEST.in` includes 
 I've modified setup.py a bit to generate Debian's changelog from the CHANGELOG.md, it's very sensitive to spacing.  
-
-# TODO
-
-Determine if LaunchPad PPA is feasible   
-Or [hosting an apt repository on Github Pages](https://pmateusz.github.io/linux/2017/06/30/linux-secure-apt-repository.html)
-
-Sign the .deb if possible  
-
-Configuration file or Configuration screen: 
-* Single level or double level menu items
-* Nicknames for menu items  
 
