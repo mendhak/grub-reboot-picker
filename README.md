@@ -89,8 +89,29 @@ lintian deb_dist/grub-reboot-picker_0.0.2-1_all.deb
 dpkg -I deb_dist/grub-reboot-picker_0.0.2-1_all.deb
 ```
 
-The setup.py is the starting point, which runs setuptools.  Which uses stdeb to run a command to create the .deb.  
-[The `setup.cfg`](https://github.com/astraw/stdeb#stdeb-distutils-command-options) contains arguments to use for the package generation, both for setuputils as well as stdeb for things like Debian control file, changelog, etc. 
-The `MANIFEST.in` includes 
-I've modified setup.py a bit to generate Debian's changelog from the CHANGELOG.md, it's very sensitive to spacing.  
+The setup.py is the starting point, which runs setuptools.  Which uses stdeb to run commands to create the .deb.  
+[The `setup.cfg`](https://github.com/astraw/stdeb#stdeb-distutils-command-options) contains arguments to use for the package generation, both for setuputils as well as stdeb for things like Debian control file, changelog, etc.   
+The `MANIFEST.in` includes non-code files which are still needed.  
+I've modified setup.py a bit to generate Debian's changelog from the CHANGELOG.md, it's very sensitive to spacing.    
 
+## Application structure
+
+There's a lot happening in a .deb file.  For my own benefit, here are the files it creates, and their purpose. 
+
+![diagram](assets/diagram.drawio.svg)
+
+### .desktop file
+
+The `com.mendhak.grubrebootpicker.desktop` file goes in two places. 
+
+`/etc/xdg/autostart/` -  ensures that the app is launched when the user logs in  
+`/usr/share/applications/` - ensures that the app can be found when searching through Activities. 
+
+### .policy file
+
+The `com.mendhak.grubrebootpicker.policy` is a [polkit policy file](https://wiki.archlinux.org/index.php/Polkit) goes in `/usr/share/polkit-1/actions/`.  
+This in turn allows the application to run `pkexec reboot` without a password prompt.  
+
+### The script
+
+As part of the build the `.py` extension is removed.  During install, the executable, extensionless Python script is put in `/usr/sbin` so that it's on the user's $PATH.  
