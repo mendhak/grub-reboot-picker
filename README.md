@@ -1,7 +1,7 @@
 # Grub Reboot Picker
 
 This utility is an app indicator (tray icon) to help you reboot into other OSes.  Instead of picking the OS you want at the grub menu, you can just preselect it from the menu here. 
-Basically it's a wrapper around `grub-reboot`.` I've only tested this on Ubuntu 20.04. 
+Basically it's a wrapper around `grub-reboot`. I've only tested this on Ubuntu 20.04. 
 
 ![screenshot](assets/screenshot.png) 
 
