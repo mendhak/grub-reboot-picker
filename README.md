@@ -17,13 +17,6 @@ sudo apt install grub-reboot-picker
 ```
 
 
-You can also get the latest `.deb` from Releases and install it. 
-
-```
-wget https://github.com/mendhak/grub-reboot-picker/releases/latest/download/grub-reboot-picker.deb
-sudo apt install ./grub-reboot-picker.deb
-```
-
 ## Run it
 
 The application will auto start the next time you log in to Ubuntu.  
@@ -61,6 +54,7 @@ Sign the .deb if possible
 You can run this application directly from this git repo.  
 
 First get the dependencies
+
 ```
 sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-3.0 gir1.2-appindicator3-0.1
 
@@ -107,7 +101,7 @@ The `MANIFEST.in` includes non-code files which are still needed.
 I've modified setup.py a bit to generate Debian's changelog from the CHANGELOG.md, it's very sensitive to spacing.    
 
 
-After building, to upload to launchpad, you have to extract the sources, then GPG sign, then use dput to push up.  Then wait for launchpad to build the code.
+After building, to upload to launchpad, you have to extract the sources, then GPG sign, then use dput to push up.  Then wait for launchpad to build the code, which can take up to an hour. 
 
 ```
 cd tmp
