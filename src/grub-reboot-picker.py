@@ -8,13 +8,9 @@ from gi.repository import Gtk, AppIndicator3
 
 
 SHOW_GRUB_MENU_SUB_MENUS = True
-DEVELOPMENT_MODE = False
+DEVELOPMENT_MODE = True
 
 icon_name = "un-reboot"
-
-
-# def on_button_clicked(widget):
-#     print("Clicked!")
 
 
 def get_grub_entries():
@@ -121,7 +117,7 @@ def get_grub_entries_with_submenus():
     return grub_entries
 
 
-def menu():
+def build_menu():
     menu = Gtk.Menu()
 
     if SHOW_GRUB_MENU_SUB_MENUS:
@@ -133,12 +129,12 @@ def menu():
     for grub_entry in grub_entries['menuitems']:
         menuitem = Gtk.MenuItem(label=grub_entry['name'])
         if len(grub_entry.get('submenuitems', [])) == 0:
-            menuitem.connect('activate', note, grub_entry)
+            menuitem.connect('activate', do_grub_reboot, grub_entry)
         submenu = Gtk.Menu()
         for grub_entry_submenuitem in grub_entry.get('submenuitems', []):
             # print(grub_entry_submenuitem)
             submenu_item = Gtk.MenuItem(label=grub_entry_submenuitem['name'])
-            submenu_item.connect('activate', note, grub_entry_submenuitem,
+            submenu_item.connect('activate', do_grub_reboot, grub_entry_submenuitem,
                                  grub_entry)
             submenu.append(submenu_item)
         menuitem.set_submenu(submenu)
@@ -153,7 +149,7 @@ def menu():
     return menu
 
 
-def note(menuitem, grub_entry, parent_grub_entry=None):
+def do_grub_reboot(menuitem, grub_entry, parent_grub_entry=None):
     if parent_grub_entry is not None:
         grub_reboot_value = "{}>{}".format(parent_grub_entry['name'], grub_entry['name'])
     else:
@@ -204,12 +200,12 @@ indicator = AppIndicator3.Indicator.new(
     "customtray", icon_name,
     AppIndicator3.IndicatorCategory.APPLICATION_STATUS)
 indicator.set_status(AppIndicator3.IndicatorStatus.ACTIVE)
-indicator.set_menu(menu())
+indicator.set_menu(build_menu())
 
 
-def reset_menu():
-    indicator.set_menu(menu())
-    return True
+# def reset_menu():
+#     indicator.set_menu(build_menu())
+#     return True
 
 
 # GLib.timeout_add(5000, reset_menu)
