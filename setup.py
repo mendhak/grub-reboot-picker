@@ -20,7 +20,7 @@ shutil.copy('src/grub-reboot-picker.py', 'tmp/grub-reboot-picker')
 
 setuptools.setup(
     name="grub-reboot-picker",
-    version="0.0.2",
+    version=os.getenv('version', '0.0.1'),
     author="Mendhak",
     author_email="mendhak@users.noreply.github.com",
     description="Tray application, reboot into different OSes.",
@@ -34,7 +34,7 @@ setuptools.setup(
     url="https://github.com/mendhak/grub-reboot-picker",
     packages=['src'],
     include_package_data=True,
-    
+
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
