@@ -8,7 +8,7 @@ from gi.repository import Gtk, AppIndicator3
 
 
 SHOW_GRUB_MENU_SUB_MENUS = True
-DEVELOPMENT_MODE = True
+DEVELOPMENT_MODE = False
 
 icon_name = "un-reboot"
 
