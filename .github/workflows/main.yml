@@ -21,7 +21,10 @@ jobs:
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
-
+    - name: Set version
+      run: source version.sh && echo "::set-env name=version::$version"
+    - name: Echo version
+      run: echo $version
     - name: Install dependencies
       run: sudo apt-get -y install python3-stdeb fakeroot python-all dh-python lintian
 
