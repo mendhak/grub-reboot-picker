@@ -32,7 +32,7 @@ jobs:
       run: python3 setup.py --command-packages=stdeb.command bdist_deb
     
     - name: Lint the deb
-      run: lintian deb_dist/grub-reboot-picker_0.0.2-1_all.deb
+      run: lintian deb_dist/grub-reboot-picker_$version-1_all.deb
     
     - name: Inspect the deb
-      run: dpkg -I deb_dist/grub-reboot-picker_0.0.2-1_all.deb
+      run: dpkg -I deb_dist/grub-reboot-picker_$version-1_all.deb
