@@ -4,3 +4,6 @@
   
   * 0.0.2: Ability to reboot into sub menu items  
   Ability to reboot into the submenus of OSes. For example different kernels.
+
+  * 0.0.6: Shutdown option
+  Added menu item for shutdown, as a convenience function.
