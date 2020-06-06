@@ -14,11 +14,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set version
+        # Set output so that asset upload step can read it
+      - name: Set version output
         id: version_setter
         run: source version.sh && echo "::set-output name=version::$version"
-      - name: Echo version
-        run: echo ${{ steps.version_setter.outputs.version }} 
+        
+        # Set environment variable so that deb build steps can pick it up
+      - name: Set version environment
+        run: echo "::set-env name=version::${{ steps.version_setter.outputs.version }}"
 
       - name: Install dependencies
         run: sudo apt-get -y install python3-stdeb fakeroot python-all dh-python lintian
@@ -27,10 +30,10 @@ jobs:
         run: python3 setup.py --command-packages=stdeb.command bdist_deb
     
       - name: Lint the deb
-        run: lintian deb_dist/grub-reboot-picker_${{ steps.version_setter.outputs.version }}-1_all.deb
+        run: lintian deb_dist/grub-reboot-picker_$version-1_all.deb
     
       - name: Inspect the deb
-        run: dpkg -I deb_dist/grub-reboot-picker_${{ steps.version_setter.outputs.version }}-1_all.deb
+        run: dpkg -I deb_dist/grub-reboot-picker_$version-1_all.deb
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
