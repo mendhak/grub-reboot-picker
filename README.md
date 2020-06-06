@@ -109,9 +109,12 @@ After building, to upload to launchpad, you have to extract the sources, then GP
 
 ```
 cd tmp
+# Extract the source into a subdirectory
 dpkg-source -x ../deb_dist/grub-reboot-picker_$version-1.dsc
 cd grub-reboot-picker-$version/
+# Build a debian package and GPG sign it
 debuild -S -sa
+# Upload to launchpad
 dput ppa:mendhak/ppa ../grub-reboot-picker_$version-1_source.changes
 ```
 
