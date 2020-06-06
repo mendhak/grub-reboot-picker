@@ -38,6 +38,10 @@ Configuration file or Configuration screen:
 * Top level or double level menu items
 * Nicknames for menu items  
 
+Shutdown menu
+
+StartupNotify = true might be causing 'wait' cursor to appear
+
 Run a single instance of the application
 
 Determine if LaunchPad PPA is feasible, to get automatic updates. 

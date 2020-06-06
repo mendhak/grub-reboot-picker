@@ -141,6 +141,10 @@ def build_menu():
 
         menu.append(menuitem)
 
+    shutdown_item = Gtk.MenuItem(label='Shutdown')
+    shutdown_item.connect('activate', do_shutdown)
+    menu.append(shutdown_item)
+
     exittray = Gtk.MenuItem(label='Exit Tray')
     exittray.connect('activate', quit)
     menu.append(exittray)
@@ -159,6 +163,13 @@ def do_grub_reboot(menuitem, grub_entry, parent_grub_entry=None):
         print("pkexec grub-reboot '{}' && sleep 1 && pkexec reboot".format(grub_reboot_value))
     if not DEVELOPMENT_MODE:
         os.system("pkexec grub-reboot '{}' && sleep 1 && pkexec reboot".format(grub_reboot_value))
+
+
+def do_shutdown(_):
+    if DEVELOPMENT_MODE:
+        print("sleep 1 && pkexec shutdown -h now")
+    if not DEVELOPMENT_MODE:
+        os.system("sleep 1 && pkexec shutdown -h now")
 
 
 def quit(_):
