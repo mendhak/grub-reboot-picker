@@ -7,3 +7,6 @@
 
   * 0.0.6: Shutdown option
   Added menu item for shutdown, as a convenience function.
+
+  * 0.0.7: Build for Ubuntu 22.04
+  Rebuilt package for Ubuntu 22.04 Jammy Jellyfish
