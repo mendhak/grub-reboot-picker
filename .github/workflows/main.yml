@@ -22,7 +22,7 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
     - name: Set version
-      run: source version.sh && echo "::set-env name=version::$version"
+      run: source version.sh && echo "version=$version" >> $GITHUB_ENV
     - name: Echo version
       run: echo $version
     - name: Install dependencies
