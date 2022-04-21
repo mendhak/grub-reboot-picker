@@ -38,7 +38,7 @@ setuptools.setup(
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
-        "Operating System :: Ubuntu 20.04",
+        "Operating System :: Ubuntu 22.04",
     ],
     python_requires='>=3.6',
     install_requires=[],
