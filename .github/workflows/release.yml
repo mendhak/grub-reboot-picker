@@ -21,7 +21,7 @@ jobs:
         
         # Set environment variable so that deb build steps can pick it up
       - name: Set version environment
-        run: source version.sh && echo "version=$version" >> $GITHUB_ENV
+        run: echo "version=${{ steps.version_setter.outputs.version }}" >> $GITHUB_ENV
 
       - name: Install dependencies
         run: sudo apt-get -y install python3-stdeb fakeroot python-all dh-python lintian
