@@ -22,13 +22,15 @@ setuptools.setup(
     name="grub-reboot-picker",
     version=os.getenv('version', '0.0.1'),
     author="Mendhak",
+    maintainer="Mendhak",
     author_email="mendhak@users.noreply.github.com",
+    maintainer_email="mendhak@users.noreply.github.com",
     description="Tray application, reboot into different OSes.",
     long_description="""This tray indicator application lets you reboot
     into different OSes based on the grub menu.
     Basically, a wrapper around grub-reboot command.
     The icon sits in the tray area in gnome.
-    Only tested on Ubuntu 20.04, 22.04.
+    Tested on Ubuntu 20.04, 22.04, 23.04.
     """,
     long_description_content_type="text/plain",
     url="https://github.com/mendhak/grub-reboot-picker",
@@ -38,7 +40,7 @@ setuptools.setup(
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
-        "Operating System :: Ubuntu 22.04",
+        "Operating System :: Ubuntu 23.04",
     ],
     python_requires='>=3.6',
     install_requires=[],
