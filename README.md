@@ -74,7 +74,7 @@ This produces a source package, and then creates a `.deb` package in the `deb_di
 First, some build dependencies:
 
 ```
-sudo apt install python3-stdeb fakeroot python3-all dh-python lintian
+sudo apt install python3-stdeb fakeroot python3-all dh-python lintian devscripts
 ```
 
 Then to build:
