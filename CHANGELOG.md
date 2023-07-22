@@ -10,3 +10,6 @@
 
   * 0.0.7: Build for Ubuntu 22.04
   Rebuilt package for Ubuntu 22.04 Jammy Jellyfish
+
+  * 0.0.8: Build for Ubuntu 23.04
+  Rebuilt package for Ubuntu 23.04 Lunar Lobster
