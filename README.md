@@ -61,10 +61,10 @@ Clone this repo, then run the python script.
 
 ```
 cd src
-./grub-reboot-picker.py
+sudo ./grub-reboot-picker.py
 ```
 
-
+Sudo is required here because grub.cfg may not be readable (0600 permission)
 
 ## Building a distributable
 
