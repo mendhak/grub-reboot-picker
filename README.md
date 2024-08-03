@@ -81,6 +81,12 @@ Then to build:
 
 ```
 # Set the version
+nano version.sh
+# Update the changelog, carefully
+nano CHANGELOG.md
+# Set the suite to use, like jammy, noble, etc. 
+nano setup.cfg
+# Read the version
 source version.sh
 # Clean everything
 rm -rf deb_dist dist *.tar.gz *.egg* build tmp

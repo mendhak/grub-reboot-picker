@@ -8,7 +8,7 @@ from gi.repository import Gtk, AppIndicator3
 
 
 SHOW_GRUB_MENU_SUB_MENUS = True
-DEVELOPMENT_MODE = True
+DEVELOPMENT_MODE = False
 GRUB_CONFIG_PATH = "/boot/grub/grub.cfg"
 if DEVELOPMENT_MODE:
     GRUB_CONFIG_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)),  "grub.test3.cfg")

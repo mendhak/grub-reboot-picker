@@ -30,7 +30,7 @@ setuptools.setup(
     into different OSes based on the grub menu.
     Basically, a wrapper around grub-reboot command.
     The icon sits in the tray area in gnome.
-    Tested on Ubuntu 20.04, 22.04, 23.04.
+    Tested on Ubuntu 20.04, 22.04, 23.04, 24.04
     """,
     long_description_content_type="text/plain",
     url="https://github.com/mendhak/grub-reboot-picker",

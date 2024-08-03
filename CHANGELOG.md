@@ -13,3 +13,9 @@
 
   * 0.0.8: Build for Ubuntu 23.04
   Rebuilt package for Ubuntu 23.04 Lunar Lobster
+
+  * 0.0.9: Parsing and menu hover bugfix
+  Bugfix, some menu items weren't parsed correctly.
+  Bugfix, menu items weren't nesting correctly.
+  Bugfix, menu items were being activated on hover.
+  Rebuilt package for Ubuntu 24.04 Noble Numbat.
