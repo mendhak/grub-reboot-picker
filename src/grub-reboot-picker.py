@@ -15,7 +15,7 @@ if DEVELOPMENT_MODE:
 
 icon_name = "un-reboot"
 
-def get_all_grub_entries(file_path):
+def get_all_grub_entries(file_path, include_submenus=True):
     """
     Build a dictionary of Grub menu items with sub menu items if applicable. 
     Simply if it has child items it's a 'submenu' else it's just a top level menu. 
@@ -66,7 +66,11 @@ def get_all_grub_entries(file_path):
             elif processing_submenu:
                 processing_submenu = False
 
-    
+    if not include_submenus:
+        for k, v in list(menu_entries.items()):
+            if len(v) > 0:
+                del menu_entries[k]
+            
     return menu_entries
 
 def get_grub_entries():
@@ -183,11 +187,8 @@ def get_grub_entries_with_submenus():
 def build_menu():
     menu = Gtk.Menu()
 
-    if SHOW_GRUB_MENU_SUB_MENUS:
-        grub_entries = get_all_grub_entries(GRUB_CONFIG_PATH)
-    else:
-        # grub_entries = get_grub_entries()
-        grub_entries = get_all_grub_entries(GRUB_CONFIG_PATH)
+    grub_entries = get_all_grub_entries(GRUB_CONFIG_PATH, SHOW_GRUB_MENU_SUB_MENUS)
+
     print(grub_entries)
 
     for grub_entry, grub_children in grub_entries.items():
