@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-from gi.repository import Gtk, AppIndicator3
 import gi
 import os
 import re
 gi.require_version("Gtk", "3.0")
 gi.require_version('AppIndicator3', '0.1')
+from gi.repository import Gtk, AppIndicator3
 
 
 SHOW_GRUB_MENU_SUB_MENUS = True
