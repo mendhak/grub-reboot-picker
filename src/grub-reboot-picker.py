@@ -7,8 +7,11 @@ gi.require_version('AppIndicator3', '0.1')
 from gi.repository import Gtk, AppIndicator3
 
 
-SHOW_GRUB_MENU_SUB_MENUS = True
-DEVELOPMENT_MODE = False
+SHOW_GRUB_MENU_SUB_MENUS = False
+DEVELOPMENT_MODE = True
+GRUB_CONFIG_PATH = "/boot/grub/grub.cfg"
+if DEVELOPMENT_MODE:
+    GRUB_CONFIG_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)),  "grub.cfg")
 
 icon_name = "un-reboot"
 
@@ -35,7 +38,7 @@ def get_grub_entries():
     grub_entries.clear()
     grub_entries['menuitems'] = []
 
-    for i, line in enumerate(open('/boot/grub/grub.cfg')):
+    for i, line in enumerate(open(GRUB_CONFIG_PATH)):
         for match in re.finditer(pattern, line):
             grub_entry = {}
             grub_entry['name'] = match.group(1)
@@ -89,7 +92,7 @@ def get_grub_entries_with_submenus():
     current_submenu = None
     submenu_entry_match = None
 
-    for i, line in enumerate(open('/boot/grub/grub.cfg')):
+    for i, line in enumerate(open(GRUB_CONFIG_PATH)):
         menu_entry_match = re.match(menu_pattern, line)
         if menu_entry_match:
             grub_entry = {}
@@ -130,14 +133,15 @@ def build_menu():
         menuitem = Gtk.MenuItem(label=grub_entry['name'])
         if len(grub_entry.get('submenuitems', [])) == 0:
             menuitem.connect('activate', do_grub_reboot, grub_entry)
-        submenu = Gtk.Menu()
-        for grub_entry_submenuitem in grub_entry.get('submenuitems', []):
-            # print(grub_entry_submenuitem)
-            submenu_item = Gtk.MenuItem(label=grub_entry_submenuitem['name'])
-            submenu_item.connect('activate', do_grub_reboot, grub_entry_submenuitem,
-                                 grub_entry)
-            submenu.append(submenu_item)
-        menuitem.set_submenu(submenu)
+        else:
+            submenu = Gtk.Menu()
+            for grub_entry_submenuitem in grub_entry.get('submenuitems', []):
+                # print(grub_entry_submenuitem)
+                submenu_item = Gtk.MenuItem(label=grub_entry_submenuitem['name'])
+                submenu_item.connect('activate', do_grub_reboot, grub_entry_submenuitem,
+                                    grub_entry)
+                submenu.append(submenu_item)
+            menuitem.set_submenu(submenu)
 
         menu.append(menuitem)
 
