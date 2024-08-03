@@ -7,7 +7,7 @@ gi.require_version('AppIndicator3', '0.1')
 from gi.repository import Gtk, AppIndicator3
 
 
-SHOW_GRUB_MENU_SUB_MENUS = False
+SHOW_GRUB_MENU_SUB_MENUS = True
 DEVELOPMENT_MODE = True
 GRUB_CONFIG_PATH = "/boot/grub/grub.cfg"
 if DEVELOPMENT_MODE:
@@ -81,7 +81,7 @@ def get_grub_entries_with_submenus():
     }
 
     """
-    menu_pattern = re.compile("^menuentry '([^']*)'")
+    menu_pattern = re.compile("^menuentry ['\"]([^'\"]*)['\"]")
     submenu_pattern = re.compile("^submenu '([^']*)'")
     submenu_entry_pattern = re.compile("^\\s+menuentry '([^']*)'")
 
