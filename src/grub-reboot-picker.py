@@ -1,31 +1,34 @@
 #!/usr/bin/env python3
+from gi.repository import Gtk, AppIndicator3
 import gi
 import os
 import re
 gi.require_version("Gtk", "3.0")
 gi.require_version('AppIndicator3', '0.1')
-from gi.repository import Gtk, AppIndicator3
+
 
 SHOW_GRUB_MENU_SUB_MENUS = True
 DEVELOPMENT_MODE = True
 GRUB_CONFIG_PATH = "/boot/grub/grub.cfg"
 if DEVELOPMENT_MODE:
     GRUB_CONFIG_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)),  "grub.test3.cfg")
+    GRUB_CONFIG_PATH = "/boot/grub/grub.cfg"
 
 icon_name = "un-reboot"
 
+
 def get_all_grub_entries(file_path, include_submenus=True):
     """
-    Build a dictionary of Grub menu items with sub menu items if applicable. 
-    Simply if it has child items it's a 'submenu' else it's just a top level menu. 
+    Build a dictionary of Grub menu items with sub menu items if applicable.
+    Simply if it has child items it's a 'submenu' else it's just a top level menu.
     {
-        'Ubuntu': [], 
+        'Ubuntu': [],
         'Advanced options for Ubuntu': [
-            'Ubuntu, with Linux 6.8.0-39-generic', 
+            'Ubuntu, with Linux 6.8.0-39-generic',
             'Ubuntu, with Linux 6.8.0-39-generic (recovery mode)'
-        ], 
-        'Memory test (memtest86+x64.bin)': [], 
-        'Memory test (memtest86+x64.bin, serial console)': [], 
+        ],
+        'Memory test (memtest86+x64.bin)': [],
+        'Memory test (memtest86+x64.bin, serial console)': [],
         'UEFI Firmware Settings': []
     }
     """
@@ -35,17 +38,17 @@ def get_all_grub_entries(file_path, include_submenus=True):
     menu_pattern = re.compile("^\\s*menuentry ['\"]([^'\"]*)['\"]")
     submenu_pattern = re.compile("^\\s*submenu ['\"]([^']*)['\"]")
     closing_brace_pattern = re.compile("^\\s*}")
-    
+
     menu_entries = {}
 
-    processing_submenu=False
-    submenu_item_added=False
-    
+    processing_submenu = False
+    submenu_item_added = False
+
     for line in lines:
         submenu_match = submenu_pattern.match(line)
         menu_match = menu_pattern.match(line)
         closing_brace_match = closing_brace_pattern.match(line)
-        
+
         if submenu_match:
             submenu_title = submenu_match.group(1)
             menu_entries[submenu_title] = []
@@ -58,8 +61,8 @@ def get_all_grub_entries(file_path, include_submenus=True):
             else:
                 menu_entries[menu_title] = []
         elif closing_brace_match:
-            # submenu_item_added would match for the first nested closing brace, 
-            # then processing_submenu for the top level closing brace. 
+            # submenu_item_added would match for the first nested closing brace,
+            # then processing_submenu for the top level closing brace.
             if submenu_item_added:
                 submenu_item_added = False
             elif processing_submenu:
@@ -69,7 +72,7 @@ def get_all_grub_entries(file_path, include_submenus=True):
         for k, v in list(menu_entries.items()):
             if len(v) > 0:
                 del menu_entries[k]
-            
+
     return menu_entries
 
 
@@ -88,8 +91,7 @@ def build_menu():
             submenu = Gtk.Menu()
             for grub_child in grub_children:
                 submenu_item = Gtk.MenuItem(label=grub_child)
-                submenu_item.connect('activate', do_grub_reboot, grub_child,
-                                    grub_entry)
+                submenu_item.connect('activate', do_grub_reboot, grub_child, grub_entry)
                 submenu.append(submenu_item)
             menuitem.set_submenu(submenu)
 
@@ -128,6 +130,7 @@ def do_shutdown(_):
 
 def quit(_):
     Gtk.main_quit()
+
 
 indicator = AppIndicator3.Indicator.new(
     "customtray", icon_name,
