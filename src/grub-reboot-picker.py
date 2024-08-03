@@ -33,7 +33,7 @@ def get_grub_entries():
         ]
     }
     """
-    pattern = re.compile("^menuentry '([^']*)'")
+    pattern = re.compile("^menuentry ['\"]([^'\"]*)['\"]")
     grub_entries = {}
     grub_entries.clear()
     grub_entries['menuitems'] = []
