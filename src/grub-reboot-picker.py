@@ -6,7 +6,6 @@ gi.require_version("Gtk", "3.0")
 gi.require_version('AppIndicator3', '0.1')
 from gi.repository import Gtk, AppIndicator3
 
-
 SHOW_GRUB_MENU_SUB_MENUS = True
 DEVELOPMENT_MODE = False
 GRUB_CONFIG_PATH = "/boot/grub/grub.cfg"
@@ -73,116 +72,6 @@ def get_all_grub_entries(file_path, include_submenus=True):
             
     return menu_entries
 
-def get_grub_entries():
-    """
-    Builds JSON from grub menu entries, just the top level ones, like this:
-    {
-        "menuitems": [
-            {
-                "name": "Ubuntu"
-            },
-            {
-                "name": "Windows Boot Manager (on /dev/nvme0n1p2)"
-            },
-            {
-                "name": "UEFI Firmware Settings"
-            }
-        ]
-    }
-    """
-    pattern = re.compile("^menuentry ['\"]([^'\"]*)['\"]")
-    grub_entries = {}
-    grub_entries.clear()
-    grub_entries['menuitems'] = []
-
-    for i, line in enumerate(open(GRUB_CONFIG_PATH)):
-        for match in re.finditer(pattern, line):
-            grub_entry = {}
-            grub_entry['name'] = match.group(1)
-            grub_entries['menuitems'].append(grub_entry)
-            # grub_entries.append(match.group(1))
-    return grub_entries
-
-
-def get_grub_entries_with_submenus():
-    """
-    Builds JSON from grub menu entries, with sub menu items like this:
-    {
-        "menuitems": [
-            {
-                "name": "Ubuntu",
-                "submenuitems": [
-                    {
-                        "name": "Ubuntu, with Linux 5.4.0-31-generic"
-                    },
-                    {
-                        "name": "Ubuntu, with Linux 5.4.0-31-generic (recovery mode)"
-                    },
-                    {
-                        "name": "Ubuntu, with Linux 5.4.0-29-generic"
-                    },
-                    {
-                        "name": "Ubuntu, with Linux 5.4.0-29-generic (recovery mode)"
-                    }
-                ]
-            },
-            {
-                "name": "Windows Boot Manager (on /dev/nvme0n1p2)",
-                "submenuitems": []
-            },
-            {
-                "name": "UEFI Firmware Settings",
-                "submenuitems": []
-            }
-        ]
-    }
-
-    """
-
-    with open(GRUB_CONFIG_PATH, 'r') as file:
-        lines = file.readlines()
-
-
-
-    menu_pattern = re.compile("^\\s*menuentry ['\"]([^'\"]*)['\"]")
-    submenu_pattern = re.compile("^\\s*submenu '([^']*)'")
-    submenu_entry_pattern = re.compile("^\\s+menuentry '([^']*)'")
-    # closing_brace_pattern = re.compile("^\s*\}")
-
-    grub_entries = {}
-    grub_entries.clear()
-    grub_entries['menuitems'] = []
-    menu_entry_match = None
-    current_submenu = None
-    submenu_entry_match = None
-
-    for i, line in enumerate(open(GRUB_CONFIG_PATH)):
-        menu_entry_match = re.match(menu_pattern, line)
-        if menu_entry_match:
-            grub_entry = {}
-            grub_entry['name'] = menu_entry_match.group(1)
-            grub_entries['menuitems'].append(grub_entry)
-            continue
-
-        submenu_entry_match = re.match(submenu_pattern, line)
-        if submenu_entry_match:
-            grub_entry = {}
-            grub_entry['name'] = submenu_entry_match.group(1)
-            grub_entries['menuitems'].append(grub_entry)
-            # print(submenu_entry_match.group(1))
-            current_submenu = grub_entry
-            current_submenu['submenuitems'] = []
-            continue
-
-        if current_submenu:
-            submenu_entry_match = re.match(submenu_entry_pattern, line)
-            if submenu_entry_match:
-                # print(submenu_entry_match.group(1))
-                grub_entry = {}
-                grub_entry['name'] = submenu_entry_match.group(1)
-                current_submenu['submenuitems'].append(grub_entry)
-    return grub_entries
-
 
 def build_menu():
     menu = Gtk.Menu()
@@ -240,53 +129,11 @@ def do_shutdown(_):
 def quit(_):
     Gtk.main_quit()
 
-# win = Gtk.Window()
-# win.connect("destroy", Gtk.main_quit)
-# #win.set_icon_from_file("logo.svg")
-# win.set_icon_name(icon_name)
-# win.set_position(Gtk.WindowPosition.CENTER_ALWAYS)
-
-# grid = Gtk.Grid()
-# win.add(grid)
-
-# button = Gtk.Button(label="Message")
-# button.connect("clicked", on_button_clicked)
-# button.set_size_request(300,100)
-# #win.add(button)
-# grid.add(button)
-
-# label = Gtk.Label()
-# label.set_label("Hello World")
-# label.set_angle(25)
-# label.set_halign(Gtk.Align.END)
-# grid.attach(label, 1, 2, 2, 1)
-# # win.add(label)
-
-# statusicon = Gtk.StatusIcon()
-# statusicon.set_from_file("logo.svg")
-# statusicon.set_visible(True)
-# statusicon.set_has_tooltip(True)
-
-# indicator = AppIndicator3.Indicator.new("customtray",
-#               os.path.abspath("logo.svg"),
-#               AppIndicator3.IndicatorCategory.APPLICATION_STATUS)
-
-
 indicator = AppIndicator3.Indicator.new(
     "customtray", icon_name,
     AppIndicator3.IndicatorCategory.APPLICATION_STATUS)
 indicator.set_status(AppIndicator3.IndicatorStatus.ACTIVE)
 indicator.set_menu(build_menu())
 
-
-# def reset_menu():
-#     indicator.set_menu(build_menu())
-#     return True
-
-
-# GLib.timeout_add(5000, reset_menu)
-
-# win.set_default_size(500,500)
-# win.show_all()
 
 Gtk.main()
