@@ -80,18 +80,16 @@ sudo apt install python3-stdeb fakeroot python3-all dh-python lintian devscripts
 Then to build:
 
 ```
-# Set the version
+# Set the version and suite (noble, jammy, etc)
 nano version.sh
 # Update the changelog, carefully
 nano CHANGELOG.md
-# Set the suite to use, like jammy, noble, etc. 
-nano setup.cfg
 # Read the version
 source version.sh
 # Clean everything
 rm -rf deb_dist dist *.tar.gz *.egg* build tmp
 # Create the source and deb
-python3 setup.py --command-packages=stdeb.command bdist_deb
+python3 setup.py --command-packages=stdeb.command sdist_dsc --suite $suite bdist_deb
 # Run a lint against this deb
 lintian deb_dist/grub-reboot-picker_$version-1_all.deb
 # Look at information about this deb
