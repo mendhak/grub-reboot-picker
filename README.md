@@ -61,10 +61,10 @@ Clone this repo, then run the python script.
 
 ```
 cd src
-./grub-reboot-picker.py
+sudo ./grub-reboot-picker.py
 ```
 
-
+Sudo is required here because grub.cfg may not be readable (0600 permission)
 
 ## Building a distributable
 
@@ -80,12 +80,16 @@ sudo apt install python3-stdeb fakeroot python3-all dh-python lintian devscripts
 Then to build:
 
 ```
-# Set the version
+# Set the version and suite (noble, jammy, etc)
+nano version.sh
+# Update the changelog, carefully
+nano CHANGELOG.md
+# Read the version
 source version.sh
 # Clean everything
 rm -rf deb_dist dist *.tar.gz *.egg* build tmp
 # Create the source and deb
-python3 setup.py --command-packages=stdeb.command bdist_deb
+python3 setup.py --command-packages=stdeb.command sdist_dsc --suite $suite bdist_deb
 # Run a lint against this deb
 lintian deb_dist/grub-reboot-picker_$version-1_all.deb
 # Look at information about this deb

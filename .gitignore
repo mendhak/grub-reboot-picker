@@ -5,3 +5,6 @@ deb_dist
 *.tar.gz
 *.egg-info
 tmp
+
+grub*.cfg
+*.deb
