@@ -89,7 +89,7 @@ source version.sh
 # Clean everything
 rm -rf deb_dist dist *.tar.gz *.egg* build tmp
 # Create the source and deb
-python3 setup.py --command-packages=stdeb.command sdist_dsc --suite $suite bdist_deb
+dpkg-buildpackage -uc -us
 # Run a lint against this deb
 lintian deb_dist/grub-reboot-picker_$version-1_all.deb
 # Look at information about this deb
