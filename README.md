@@ -90,10 +90,16 @@ source version.sh
 rm -rf deb_dist dist *.tar.gz *.egg* build tmp
 # Create the source and deb
 dpkg-buildpackage -uc -us
-# Run a lint against this deb
+# Run a lint against this deb, check for errors
 lintian deb_dist/grub-reboot-picker_$version-1_all.deb
 # Look at information about this deb
 dpkg -I deb_dist/grub-reboot-picker_$version-1_all.deb
+# List all the files in the deb
+dpkg -c grub-reboot-picker_*.deb
+# Extract contents to a dir
+dpkg-deb -R grub-reboot-picker_*.deb extracted/
+# View its dependencies
+dpkg-deb -f grub-reboot-picker_*.deb Depends
 ```
 
 The setup.py is the starting point, which runs setuptools.  Which uses stdeb to run commands to create the .deb.  
