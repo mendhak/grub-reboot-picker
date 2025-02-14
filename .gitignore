@@ -10,3 +10,7 @@ grub*.cfg
 *.deb
 
 .pybuild
+*.buildinfo
+*.changes
+*.dsc
+*.tar.xz
