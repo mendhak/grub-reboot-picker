@@ -1,17 +1,6 @@
 import os
 import shutil
 import setuptools
-from stdeb import util
-
-# Spacing is *critical* in the entire changelog file string.
-with open("CHANGELOG.md", "r") as fh:
-    changelog = fh.read()
-
-util.CHANGELOG_FILE = """%(source)s (%(full_version)s) %(distname)s; urgency=low
-
-{}
-
- -- %(maintainer)s  %(date822)s\n""".format(changelog)
 
 if not os.path.exists("tmp"):
     os.makedirs("tmp")

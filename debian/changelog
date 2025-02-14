@@ -1,0 +1,5 @@
+grub-reboot-picker (0.0.1) noble; urgency=low
+
+  * Initial release
+
+ -- Mendhak <mendhak@users.noreply.github.com>  Fri, 14 Feb 2025 00:00:00 +0000
