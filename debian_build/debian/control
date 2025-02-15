@@ -21,8 +21,8 @@ Depends: ${python3:Depends},
          gir1.2-appindicator3-0.1
 Homepage: https://github.com/mendhak/grub-reboot-picker
 Description: Tray application, reboot into different OSes.
-  This tray indicator application lets you reboot
-      into different OSes based on the grub menu.
-      Basically, a wrapper around grub-reboot command.
-      The icon sits in the tray area in gnome.
-      Tested on Ubuntu 20.04, 22.04, 23.04, 24.04
+ This tray indicator application lets you reboot
+ into different OSes based on the grub menu.
+ Basically, a wrapper around grub-reboot command.
+ The icon sits in the tray area in gnome.
+ Tested on Ubuntu 20.04, 22.04, 23.04, 24.04
