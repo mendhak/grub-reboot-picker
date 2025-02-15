@@ -32,7 +32,7 @@ After a moment, Ubuntu will reboot.
 The grub menu item you chose should be preselected. 
 
 
-# TODO
+## TODO
 
 Configuration file or Configuration screen: 
 * Top level or double level menu items
@@ -44,9 +44,8 @@ Run a single instance of the application
 
 
 
-# Developing locally
+## Running it locally from this repo
 
-## Running it from this repo
 
 You can run this application directly from this git repo.  
 
@@ -68,8 +67,34 @@ Sudo is required here because grub.cfg may not be readable (0600 permission)
 
 ## Building a distributable
 
-Using [setuptools](https://setuptools.readthedocs.io/en/latest/) with [stdeb](https://github.com/astraw/stdeb).  
-This produces a source package, and then creates a `.deb` package in the `deb_dist` directory. 
+This project uses pybuild to create a .deb file. The pyproject.toml file holds the information needed to do the build, and there are additional configuration files in debian folder such as control, links, install, changelog. All of these get used by pybuild to create the .deb.  
+
+The `debian_build` directory contains the files needed to build the .deb, and the .deb appears in the parent directory for some reason. 
+It's messy which is why I prefer the Docker way. 
+
+
+### Build using Docker
+
+```
+# Set the version and suite (noble, jammy, etc)
+nano version.sh
+# Update the changelog, carefully
+nano CHANGELOG.md
+# Read the version
+source version.sh
+# Build the image which will build the deb
+docker build --build-arg version=$version --build-arg suite=$suite --progress=plain -t docker-deb-builder .
+# Now grab the deb and dsc files
+mkdir -p output
+cd output
+docker create --name docker-deb-builder docker-deb-builder
+docker cp docker-deb-builder:/build/grub-reboot-picker_${version}.dsc ./
+docker cp docker-deb-builder:/build/grub-reboot-picker_${version}_all.deb ./
+docker rm docker-deb-builder
+ls -lah 
+```
+
+### Build on a local machine
 
 First, some build dependencies:
 
@@ -95,31 +120,37 @@ python3 generate_changelog.py
 dpkg-parsechangelog -l debian/changelog
 # Build the package
 dpkg-buildpackage -uc -us
-
-# Back up to the parent, for some reason the deb is created in the parent dir
 cd ..
+```
 
+### Inspecting the deb
+
+```
 # Run a lint against this deb, check for errors
 lintian grub-reboot-picker_${version}_all.deb
+
 # Look at information about this deb
 dpkg -I grub-reboot-picker_${version}_all.deb
+
 # List all the files in the deb
 dpkg -c grub-reboot-picker_*.deb
+
 # Extract contents to a dir
 dpkg-deb -R grub-reboot-picker_*.deb tmp/
+
 # View changelog
 less tmp/usr/share/doc/grub-reboot-picker/changelog.gz
+
 # View its dependencies
 dpkg-deb -f grub-reboot-picker_*.deb Depends
 ```
 
-The setup.py is the starting point, which runs setuptools.  Which uses stdeb to run commands to create the .deb.  
-[The `setup.cfg`](https://github.com/astraw/stdeb#stdeb-distutils-command-options) contains arguments to use for the package generation, both for setuputils as well as stdeb for things like Debian control file, changelog, etc.   
-The `MANIFEST.in` includes non-code files which are still needed.  
-I've modified setup.py a bit to generate Debian's changelog from the CHANGELOG.md, it's very sensitive to spacing.    
+
+## Uploading to Launchpad
 
 
-After building, to upload to launchpad, you have to extract the sources, then GPG sign, then use dput to push up.  Then wait for launchpad to build the code, which can take up to an hour. 
+After building, to upload to launchpad, I have to extract the sources, then GPG sign, then use dput to push up.  
+Then wait for launchpad to build the code, which can take up to an hour. 
 
 ```
 cd tmp
