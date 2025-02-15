@@ -27,9 +27,9 @@ jobs:
         echo "version=$version" >> $GITHUB_ENV
         echo "suite=$suite" >> $GITHUB_ENV
         echo $version
-        
+
     - name: Install dependencies
-      run: sudo apt-get -y install dpkg-dev fakeroot debhelper python3-all dh-python lintian devscripts python3-hatchling pybuild-plugin-pyproject
+      run: sudo apt-get -y install dpkg-dev fakeroot debhelper python3-all dh-python lintian devscripts python3-hatchling pybuild-plugin-pyproject build-essential
 
     - name: Build the deb
       run: |
