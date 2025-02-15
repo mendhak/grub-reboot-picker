@@ -80,10 +80,14 @@ It's messy which is why I prefer the Docker way.
 nano version.sh
 # Update the changelog, carefully
 nano CHANGELOG.md
+
 # Read the version
 source version.sh
+
 # Build the image which will build the deb
 docker build --build-arg version=$version --build-arg suite=$suite --progress=plain -t docker-deb-builder .
+# Alternately: docker buildx bake deb-builder
+
 # Now grab the deb and dsc files
 mkdir -p output
 cd output
