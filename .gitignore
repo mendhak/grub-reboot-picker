@@ -8,3 +8,4 @@ tmp
 
 grub*.cfg
 *.deb
+output/

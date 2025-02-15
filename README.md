@@ -71,29 +71,19 @@ Sudo is required here because grub.cfg may not be readable (0600 permission)
 Using [setuptools](https://setuptools.readthedocs.io/en/latest/) with [stdeb](https://github.com/astraw/stdeb).  
 This produces a source package, and then creates a `.deb` package in the `deb_dist` directory. 
 
-First, some build dependencies:
+I've wrapped the build steps in Docker, because stdeb is currently incompatible with later versions of Python (should be fixed in stdeb 0.11.0)
 
-```
-sudo apt install python3-stdeb fakeroot python3-all dh-python lintian devscripts
-```
-
-Then to build:
+To build:
 
 ```
 # Set the version and suite (noble, jammy, etc)
 nano version.sh
 # Update the changelog, carefully
 nano CHANGELOG.md
-# Read the version
+# Read the version and suite
 source version.sh
-# Clean everything
-rm -rf deb_dist dist *.tar.gz *.egg* build tmp
-# Create the source and deb
-python3 setup.py --command-packages=stdeb.command sdist_dsc --suite $suite bdist_deb
-# Run a lint against this deb
-lintian deb_dist/grub-reboot-picker_$version-1_all.deb
-# Look at information about this deb
-dpkg -I deb_dist/grub-reboot-picker_$version-1_all.deb
+# Create the source and deb, run a lint, look at info:
+docker build --build-arg version=$version --build-arg suite=$suite --progress=plain -t docker-deb-builder .
 ```
 
 The setup.py is the starting point, which runs setuptools.  Which uses stdeb to run commands to create the .deb.  
@@ -105,9 +95,14 @@ I've modified setup.py a bit to generate Debian's changelog from the CHANGELOG.m
 After building, to upload to launchpad, you have to extract the sources, then GPG sign, then use dput to push up.  Then wait for launchpad to build the code, which can take up to an hour. 
 
 ```
-cd tmp
+source version.sh
+mkdir -p output
+cd output
+docker create --name docker-deb-builder docker-deb-builder
+docker cp docker-deb-builder:/build/deb_dist ./
+
 # Extract the source into a subdirectory
-dpkg-source -x ../deb_dist/grub-reboot-picker_$version-1.dsc
+dpkg-source -x ./deb_dist/grub-reboot-picker_$version-1.dsc
 cd grub-reboot-picker-$version/
 # Build a debian package and GPG sign it
 debuild -S -sa
