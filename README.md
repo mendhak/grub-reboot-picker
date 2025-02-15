@@ -93,6 +93,7 @@ mkdir -p output
 cd output
 docker create --name docker-deb-builder docker-deb-builder
 docker cp docker-deb-builder:/build/grub-reboot-picker_${version}.dsc ./
+docker cp docker-deb-builder:/build/grub-reboot-picker_${version}.tar.xz ./
 docker cp docker-deb-builder:/build/grub-reboot-picker_${version}_all.deb ./
 docker rm docker-deb-builder
 ls -lah 
@@ -125,11 +126,22 @@ dpkg-parsechangelog -l debian/changelog
 # Build the package
 dpkg-buildpackage -uc -us
 cd ..
+
+# Grab the deb and dsc files
+mkdir -p output
+mv grub-reboot-picker_${version}_all.deb output/
+mv grub-reboot-picker_${version}.dsc output/
+mv grub-reboot-picker_${version}.tar.xz output/
+
 ```
 
-### Inspecting the deb
+## Inspecting the deb
+
+Either way, once the .deb is built, it's good to inspect it.  
 
 ```
+cd output
+
 # Run a lint against this deb, check for errors
 lintian grub-reboot-picker_${version}_all.deb
 
@@ -137,16 +149,17 @@ lintian grub-reboot-picker_${version}_all.deb
 dpkg -I grub-reboot-picker_${version}_all.deb
 
 # List all the files in the deb
-dpkg -c grub-reboot-picker_*.deb
+dpkg -c grub-reboot-picker_${version}_all.deb
 
 # Extract contents to a dir
-dpkg-deb -R grub-reboot-picker_*.deb tmp/
+dpkg-deb -R grub-reboot-picker_${version}_all.deb extracted/
 
 # View changelog
-less tmp/usr/share/doc/grub-reboot-picker/changelog.gz
+zless extracted/usr/share/doc/grub-reboot-picker/changelog.gz
+rm -rf extracted/
 
 # View its dependencies
-dpkg-deb -f grub-reboot-picker_*.deb Depends
+dpkg-deb -f grub-reboot-picker_${version}_all.deb Depends
 ```
 
 
@@ -157,14 +170,14 @@ After building, to upload to launchpad, I have to extract the sources, then GPG 
 Then wait for launchpad to build the code, which can take up to an hour. 
 
 ```
-cd tmp
+cd output
 # Extract the source into a subdirectory
-dpkg-source -x ../deb_dist/grub-reboot-picker_$version-1.dsc
-cd grub-reboot-picker-$version/
+dpkg-source -x grub-reboot-picker_${version}.dsc
+cd grub-reboot-picker-${version}/
 # Build a debian package and GPG sign it
 debuild -S -sa
 # Upload to launchpad
-dput ppa:mendhak/ppa ../grub-reboot-picker_$version-1_source.changes
+dput ppa:mendhak/ppa ../grub-reboot-picker_$version_source.changes
 ```
 
 
