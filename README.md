@@ -87,8 +87,13 @@ nano CHANGELOG.md
 # Read the version
 source version.sh
 # Clean everything
-rm -rf deb_dist dist *.tar.gz *.egg* build tmp
+git clean -fdx
 # Create the source and deb
+cd debian_build/
+# Generate and test changelog
+python3 generate_changelog.py
+dpkg-parsechangelog -l debian/changelog
+# Build the package
 dpkg-buildpackage -uc -us
 # Run a lint against this deb, check for errors
 lintian deb_dist/grub-reboot-picker_$version-1_all.deb
