@@ -22,9 +22,12 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
     - name: Set version
-      run: source version.sh && echo "version=$version" >> $GITHUB_ENV
-    - name: Echo version
-      run: echo $version
+      run: |
+        source version.sh 
+        echo "version=$version" >> $GITHUB_ENV
+        echo "suite=$suite" >> $GITHUB_ENV
+        echo $version
+        
     - name: Install dependencies
       run: sudo apt-get -y install dpkg-dev fakeroot debhelper python3-all dh-python lintian devscripts python3-hatchling pybuild-plugin-pyproject
 
