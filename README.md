@@ -74,7 +74,7 @@ This produces a source package, and then creates a `.deb` package in the `deb_di
 First, some build dependencies:
 
 ```
-sudo apt install python3-stdeb fakeroot python3-all dh-python lintian devscripts
+sudo apt install python3-stdeb fakeroot python3-all dh-python lintian devscripts python3-hatchling pybuild-plugin-pyproject
 ```
 
 Then to build:
@@ -95,14 +95,20 @@ python3 generate_changelog.py
 dpkg-parsechangelog -l debian/changelog
 # Build the package
 dpkg-buildpackage -uc -us
+
+# Back up to the parent, for some reason the deb is created in the parent dir
+cd ..
+
 # Run a lint against this deb, check for errors
-lintian deb_dist/grub-reboot-picker_$version-1_all.deb
+lintian grub-reboot-picker_${version}_all.deb
 # Look at information about this deb
-dpkg -I deb_dist/grub-reboot-picker_$version-1_all.deb
+dpkg -I grub-reboot-picker_${version}_all.deb
 # List all the files in the deb
 dpkg -c grub-reboot-picker_*.deb
 # Extract contents to a dir
 dpkg-deb -R grub-reboot-picker_*.deb extracted/
+# View changelog
+less tmp/usr/share/doc/grub-reboot-picker/changelog.gz
 # View its dependencies
 dpkg-deb -f grub-reboot-picker_*.deb Depends
 ```
