@@ -106,7 +106,7 @@ dpkg -I grub-reboot-picker_${version}_all.deb
 # List all the files in the deb
 dpkg -c grub-reboot-picker_*.deb
 # Extract contents to a dir
-dpkg-deb -R grub-reboot-picker_*.deb extracted/
+dpkg-deb -R grub-reboot-picker_*.deb tmp/
 # View changelog
 less tmp/usr/share/doc/grub-reboot-picker/changelog.gz
 # View its dependencies
