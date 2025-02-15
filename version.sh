@@ -1,2 +1,3 @@
 export suite=focal
-export version=0.0.9+$suite
+export pkgversion=0.0.9
+export version=$pkgversion+$suite
