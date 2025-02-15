@@ -177,7 +177,7 @@ cd grub-reboot-picker-${version}/
 # Build a debian package and GPG sign it
 debuild -S -sa
 # Upload to launchpad
-dput ppa:mendhak/ppa ../grub-reboot-picker_$version_source.changes
+dput ppa:mendhak/ppa ../grub-reboot-picker_${version}_source.changes
 ```
 
 
