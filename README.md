@@ -59,7 +59,7 @@ sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-3.0 gir1.2-appindicator3
 Clone this repo, then run the python script. 
 
 ```
-cd src
+cd grub-reboot-picker
 sudo ./grub-reboot-picker.py
 ```
 
