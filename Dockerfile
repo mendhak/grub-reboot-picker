@@ -18,17 +18,15 @@ RUN set -ex \
 RUN python3 --version
 
 
-WORKDIR /build
+WORKDIR /build/grub-reboot-picker
 
-COPY . /build
+COPY . /build/grub-reboot-picker
 
 ARG version
 ARG suite
 
 
-WORKDIR /build/debian_build 
-
-RUN python3 generate_changelog.py 
+RUN python3 other/generate_changelog.py 
 
 RUN dpkg-parsechangelog -l debian/changelog 
 

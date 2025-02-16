@@ -69,8 +69,7 @@ Sudo is required here because grub.cfg may not be readable (0600 permission)
 
 This project uses pybuild to create a .deb file. The pyproject.toml file holds the information needed to do the build, and there are additional configuration files in debian folder such as control, links, install, changelog. All of these get used by pybuild to create the .deb.  
 
-The `debian_build` directory contains the files needed to build the .deb, and the .deb appears in the parent directory for some reason. 
-It's messy which is why I prefer the Docker way. 
+The `debian` directory contains the files needed to build the .deb, but the .deb appears in the parent directory for some reason. It's messy which is why I prefer the Docker way. 
 
 
 ### Build using Docker
