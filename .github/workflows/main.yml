@@ -38,9 +38,7 @@ jobs:
         dpkg-buildpackage -uc -us
 
         mkdir -p output
-        mv grub-reboot-picker_${version}_all.deb output/
-        mv grub-reboot-picker_${version}.dsc output/
-        mv grub-reboot-picker_${version}.tar.xz output/
+        mv ../grub-reboot-picker_${version}* output/
     
     - name: Lint the deb
       run: |
