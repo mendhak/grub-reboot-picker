@@ -36,7 +36,7 @@ jobs:
         python3 other/generate_changelog.py
         dpkg-parsechangelog -l debian/changelog
         dpkg-buildpackage -uc -us
-        cd ..
+
         mkdir -p output
         mv grub-reboot-picker_${version}_all.deb output/
         mv grub-reboot-picker_${version}.dsc output/
