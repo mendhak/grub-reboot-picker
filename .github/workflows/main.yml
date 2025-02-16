@@ -33,7 +33,7 @@ jobs:
 
     - name: Build the deb
       run: |
-        python3 generate_changelog.py
+        python3 other/generate_changelog.py
         dpkg-parsechangelog -l debian/changelog
         dpkg-buildpackage -uc -us
         cd ..
