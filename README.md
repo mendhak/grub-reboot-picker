@@ -118,20 +118,17 @@ nano CHANGELOG.md
 source version.sh
 # Clean everything
 git clean -fdx
-# Create the source and deb
-cd debian_build/
+
 # Generate and test changelog
-python3 generate_changelog.py
+python3 other/generate_changelog.py
 dpkg-parsechangelog -l debian/changelog
+
 # Build the package
 dpkg-buildpackage -uc -us
-cd ..
 
 # Grab the deb and dsc files
 mkdir -p output
-mv grub-reboot-picker_${version}_all.deb output/
-mv grub-reboot-picker_${version}.dsc output/
-mv grub-reboot-picker_${version}.tar.xz output/
+mv ../grub-reboot-picker_${version}* output/
 
 ```
 

@@ -9,15 +9,15 @@ authors = [
     { name="Mendhak", email="mendhak@users.noreply.github.com" },
 ]
 description = "Tray application, reboot into different OSes."
-readme = "../README.md"
+readme = "README.md"
 requires-python = ">=3.6"
 
 [tool.hatch.version]
-path = "../version.sh"
+path = "version.sh"
 pattern = "export pkgversion=(?P<version>[0-9.]+)"
 
 [project.urls]
 Homepage = "https://github.com/mendhak/grub-reboot-picker"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src"]
+packages = ["grub-reboot-picker"]

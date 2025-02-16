@@ -7,7 +7,7 @@ suite = os.environ['suite']
 
 
 def parse_changelog():
-    with open('../CHANGELOG.md', 'r') as f:
+    with open('CHANGELOG.md', 'r') as f:
         content = f.read()
 
     entries = re.findall(
