@@ -6,9 +6,10 @@ name: CI
 # events but only for the master branch
 on:
   push:
-    branches: [ master ]
+    branches: [ ]
   pull_request:
     branches: [ master ]
+  workflow_call:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -22,17 +23,47 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
     - name: Set version
-      run: source version.sh && echo "version=$version" >> $GITHUB_ENV
-    - name: Echo version
-      run: echo $version
+      run: |
+        source version.sh 
+        echo "version=$version" >> $GITHUB_ENV
+        echo "suite=$suite" >> $GITHUB_ENV
+        echo $version
+
     - name: Install dependencies
-      run: sudo apt-get -y install python3-stdeb fakeroot python3-all dh-python lintian
+      run: sudo apt-get -y install dpkg-dev fakeroot debhelper python3-all dh-python lintian devscripts python3-hatchling pybuild-plugin-pyproject build-essential
 
     - name: Build the deb
-      run: python3 setup.py --command-packages=stdeb.command bdist_deb
+      run: |
+        python3 other/generate_changelog.py
+        dpkg-parsechangelog -l debian/changelog
+        dpkg-buildpackage -uc -us
+
+        mkdir -p output
+        mv ../grub-reboot-picker_${version}* output/
     
     - name: Lint the deb
-      run: lintian deb_dist/grub-reboot-picker_$version-1_all.deb
+      run: |
+        cd output
+
+        # Run a lint against this deb, check for errors
+        lintian grub-reboot-picker_${version}_all.deb
     
     - name: Inspect the deb
-      run: dpkg -I deb_dist/grub-reboot-picker_$version-1_all.deb
+      run: |
+        cd output 
+
+        # Look at information about this deb
+        dpkg -I grub-reboot-picker_${version}_all.deb
+
+        # List all the files in the deb
+        dpkg -c grub-reboot-picker_${version}_all.deb
+
+        # Extract contents to a dir
+        dpkg-deb -R grub-reboot-picker_${version}_all.deb extracted/
+
+        # View changelog
+        zless extracted/usr/share/doc/grub-reboot-picker/changelog.gz
+        rm -rf extracted/
+
+        # View its dependencies
+        dpkg-deb -f grub-reboot-picker_${version}_all.deb Depends

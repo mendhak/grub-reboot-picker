@@ -32,7 +32,7 @@ After a moment, Ubuntu will reboot.
 The grub menu item you chose should be preselected. 
 
 
-# TODO
+## TODO
 
 Configuration file or Configuration screen: 
 * Top level or double level menu items
@@ -44,9 +44,8 @@ Run a single instance of the application
 
 
 
-# Developing locally
+## Running it locally from this repo
 
-## Running it from this repo
 
 You can run this application directly from this git repo.  
 
@@ -60,7 +59,7 @@ sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-3.0 gir1.2-appindicator3
 Clone this repo, then run the python script. 
 
 ```
-cd src
+cd grub-reboot-picker
 sudo ./grub-reboot-picker.py
 ```
 
@@ -68,13 +67,43 @@ Sudo is required here because grub.cfg may not be readable (0600 permission)
 
 ## Building a distributable
 
-Using [setuptools](https://setuptools.readthedocs.io/en/latest/) with [stdeb](https://github.com/astraw/stdeb).  
-This produces a source package, and then creates a `.deb` package in the `deb_dist` directory. 
+This project uses pybuild to create a .deb file. The pyproject.toml file holds the information needed to do the build, and there are additional configuration files in debian folder such as control, links, install, changelog. All of these get used by pybuild to create the .deb.  
+
+The `debian` directory contains the files needed to build the .deb, but the .deb appears in the parent directory for some reason. It's messy which is why I prefer the Docker way. 
+
+
+### Build using Docker
+
+```
+# Set the version and suite (noble, jammy, etc)
+nano version.sh
+# Update the changelog, carefully
+nano CHANGELOG.md
+
+# Read the version
+source version.sh
+
+# Build the image which will build the deb
+docker build --build-arg version=$version --build-arg suite=$suite --progress=plain -t docker-deb-builder .
+# Alternately: docker buildx bake deb-builder
+
+# Now grab the deb and dsc files
+mkdir -p output
+cd output
+docker create --name docker-deb-builder docker-deb-builder
+docker cp docker-deb-builder:/build/grub-reboot-picker_${version}.dsc ./
+docker cp docker-deb-builder:/build/grub-reboot-picker_${version}.tar.xz ./
+docker cp docker-deb-builder:/build/grub-reboot-picker_${version}_all.deb ./
+docker rm docker-deb-builder
+ls -lah 
+```
+
+### Build on a local machine
 
 First, some build dependencies:
 
 ```
-sudo apt install python3-stdeb fakeroot python3-all dh-python lintian devscripts
+sudo apt install dpkg-dev fakeroot debhelper python3-all dh-python lintian devscripts python3-hatchling pybuild-plugin-pyproject build-essential
 ```
 
 Then to build:
@@ -87,32 +116,65 @@ nano CHANGELOG.md
 # Read the version
 source version.sh
 # Clean everything
-rm -rf deb_dist dist *.tar.gz *.egg* build tmp
-# Create the source and deb
-python3 setup.py --command-packages=stdeb.command sdist_dsc --suite $suite bdist_deb
-# Run a lint against this deb
-lintian deb_dist/grub-reboot-picker_$version-1_all.deb
+git clean -fdx
+
+# Generate and test changelog
+python3 other/generate_changelog.py
+dpkg-parsechangelog -l debian/changelog
+
+# Build the package
+dpkg-buildpackage -uc -us
+
+# Grab the deb and dsc files
+mkdir -p output
+mv ../grub-reboot-picker_${version}* output/
+
+```
+
+## Inspecting the deb
+
+Either way, once the .deb is built, it's good to inspect it.  
+
+```
+cd output
+
+# Run a lint against this deb, check for errors
+lintian grub-reboot-picker_${version}_all.deb
+
 # Look at information about this deb
-dpkg -I deb_dist/grub-reboot-picker_$version-1_all.deb
+dpkg -I grub-reboot-picker_${version}_all.deb
+
+# List all the files in the deb
+dpkg -c grub-reboot-picker_${version}_all.deb
+
+# Extract contents to a dir
+dpkg-deb -R grub-reboot-picker_${version}_all.deb extracted/
+
+# View changelog
+zless extracted/usr/share/doc/grub-reboot-picker/changelog.gz
+rm -rf extracted/
+
+# View its dependencies
+dpkg-deb -f grub-reboot-picker_${version}_all.deb Depends
 ```
 
-The setup.py is the starting point, which runs setuptools.  Which uses stdeb to run commands to create the .deb.  
-[The `setup.cfg`](https://github.com/astraw/stdeb#stdeb-distutils-command-options) contains arguments to use for the package generation, both for setuputils as well as stdeb for things like Debian control file, changelog, etc.   
-The `MANIFEST.in` includes non-code files which are still needed.  
-I've modified setup.py a bit to generate Debian's changelog from the CHANGELOG.md, it's very sensitive to spacing.    
+
+## Uploading to Launchpad
 
 
-After building, to upload to launchpad, you have to extract the sources, then GPG sign, then use dput to push up.  Then wait for launchpad to build the code, which can take up to an hour. 
+After building, to upload to launchpad, I have to extract the sources, then GPG sign, then use dput to push up.  
+Then wait for launchpad to build the code, which can take up to an hour. 
 
 ```
-cd tmp
+cd output
 # Extract the source into a subdirectory
-dpkg-source -x ../deb_dist/grub-reboot-picker_$version-1.dsc
-cd grub-reboot-picker-$version/
-# Build a debian package and GPG sign it
+dpkg-source -x grub-reboot-picker_${version}.dsc
+cd grub-reboot-picker-${version}/
+# Build a debian package and GPG sign it - it uses the key id from the changelog
 debuild -S -sa
+# Also possible to specify the key id: debuild -S -sa -k6989CF77490369CFFDCBCD8995E7D75C76CBE9A9
 # Upload to launchpad
-dput ppa:mendhak/ppa ../grub-reboot-picker_$version-1_source.changes
+dput ppa:mendhak/ppa ../grub-reboot-picker_${version}_source.changes
 ```
 
 
