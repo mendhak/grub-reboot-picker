@@ -170,8 +170,9 @@ cd output
 # Extract the source into a subdirectory
 dpkg-source -x grub-reboot-picker_${version}.dsc
 cd grub-reboot-picker-${version}/
-# Build a debian package and GPG sign it
+# Build a debian package and GPG sign it - it uses the key id from the changelog
 debuild -S -sa
+# Also possible to specify the key id: debuild -S -sa -k6989CF77490369CFFDCBCD8995E7D75C76CBE9A9
 # Upload to launchpad
 dput ppa:mendhak/ppa ../grub-reboot-picker_${version}_source.changes
 ```
