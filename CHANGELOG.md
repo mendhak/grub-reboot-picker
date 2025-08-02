@@ -20,7 +20,7 @@
   Bugfix, menu items were being activated on hover.
   Rebuilt package for Ubuntu 24.04 Noble Numbat.
 
-  * 0.0.10 (2025-08-02): Support for molly-guard
+  * 0.1.1 (2025-08-02): Support for molly-guard
   Support for molly-guard by timur-tabi.
   Will use the .no-molly-guard version of reboot command if exists.
-  
+  Use ayatana app indicator if available.
