@@ -1,3 +1,3 @@
 export suite=plucky
-export pkgversion=0.0.10
+export pkgversion=0.1.1
 export version=$pkgversion+$suite
