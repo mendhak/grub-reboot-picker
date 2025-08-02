@@ -52,7 +52,7 @@ You can run this application directly from this git repo.
 First get the dependencies
 
 ```
-sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-3.0 gir1.2-appindicator3-0.1
+sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-3.0 gir1.2-ayatanaappindicator3-0.1
 
 ```
 
@@ -64,6 +64,27 @@ sudo ./grub-reboot-picker.py
 ```
 
 Sudo is required here because grub.cfg may not be readable (0600 permission)
+
+### Running it with molly-guard
+
+molly-guard is a package that prompts you before reboot/shutdown, preventing accidental reboots. 
+This script will run the .no-molly-guard version of reboot/shutdown to bypass molly-guard.  
+
+To test it locally, need to install molly-guard then add two environment variables to /etc/environment. 
+
+```
+sudo apt install molly-guard
+echo "ALWAYS_QUERY_HOSTNAME=1" | sudo tee -a /etc/environment
+echo "PRETEND_SSH=1" | sudo tee -a /etc/environment
+```
+
+Then run the script as before
+
+```
+cd grub-reboot-picker
+sudo ./grub-reboot-picker.py
+```
+
 
 ## Building a distributable
 
