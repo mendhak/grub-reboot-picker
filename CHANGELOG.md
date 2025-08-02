@@ -23,3 +23,4 @@
   * 0.0.10 (2025-08-02): Support for molly-guard
   Support for molly-guard by timur-tabi.
   Will use the .no-molly-guard version of reboot command if exists.
+  

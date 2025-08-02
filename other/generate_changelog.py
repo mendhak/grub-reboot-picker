@@ -12,9 +12,11 @@ def parse_changelog():
 
     entries = re.findall(
         r'\* ([0-9.]+) \(([^)]+)\):([^*]+(?:\n\s+[^*][^\n]+)*)', content)
+    
+    print(entries)
 
-    # Sort entries in reverse order (newest first)
-    entries.sort(key=lambda x: x[0], reverse=True)
+    # Sort entries in reverse order (newest first, by date)
+    entries.sort(key=lambda x: x[1], reverse=True)
 
     changelog_entries = []
     for version_num, date_str, description in entries:
