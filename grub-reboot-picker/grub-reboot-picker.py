@@ -108,6 +108,15 @@ def build_menu():
     menu.show_all()
     return menu
 
+# Returns the correct version of the given command, depending on whether
+# molly-guard is installed.
+def molly_command(command):
+    molly_command = "/sbin/{}.no-molly-guard".format(command)
+    if os.path.exists(molly_command):
+        return molly_command
+    else:
+        # Maybe this should return "/sbin/command"
+        return command
 
 def do_grub_reboot(menuitem, grub_entry, parent_grub_entry=None):
     if parent_grub_entry is not None:
@@ -115,17 +124,20 @@ def do_grub_reboot(menuitem, grub_entry, parent_grub_entry=None):
     else:
         grub_reboot_value = "{}".format(grub_entry)
 
-    if DEVELOPMENT_MODE:
-        print("pkexec grub-reboot '{}' && sleep 1 && pkexec reboot".format(grub_reboot_value))
-    if not DEVELOPMENT_MODE:
-        os.system("pkexec grub-reboot '{}' && sleep 1 && pkexec reboot".format(grub_reboot_value))
+    reboot_command = molly_command("reboot")
 
+    if DEVELOPMENT_MODE:
+        print("pkexec grub-reboot '{}' && sleep 1 && pkexec {}".format(grub_reboot_value, reboot_command))
+    if not DEVELOPMENT_MODE:
+        os.system("pkexec grub-reboot '{}' && sleep 1 && pkexec {}".format(grub_reboot_value, reboot_command))
 
 def do_shutdown(_):
+    shutdown_command = molly_command("shutdown")
+
     if DEVELOPMENT_MODE:
-        print("sleep 1 && pkexec shutdown -h now")
+        print("sleep 1 && pkexec {} -h now".format(shutdown_command))
     if not DEVELOPMENT_MODE:
-        os.system("sleep 1 && pkexec shutdown -h now")
+        os.system("sleep 1 && pkexec {} -h now".format(shutdown_command))
 
 
 def quit(_):
