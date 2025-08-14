@@ -1,3 +1,11 @@
+grub-reboot-picker (0.0.10+plucky) plucky; urgency=low
+
+  * Support for molly-guard
+  * Support for molly-guard by timur-tabi.
+  * Will use the .no-molly-guard version of reboot command if exists.
+
+ -- Mendhak <mendhak@users.noreply.github.com>  Sat, 02 Aug 2025 00:00:00 +0000
+
 grub-reboot-picker (0.0.9+plucky) plucky; urgency=low
 
   * Parsing and menu hover bugfix
