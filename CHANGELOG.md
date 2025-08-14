@@ -24,3 +24,7 @@
   Support for molly-guard by timur-tabi.
   Will use the .no-molly-guard version of reboot command if exists.
   Use ayatana app indicator if available.
+
+  * 0.2.0 (2025-08-14): Move to libayatana-appindicator-glib
+  The older ayatana app indicator is deprecated. 
+  
