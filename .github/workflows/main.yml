@@ -7,6 +7,8 @@ name: CI
 on:
   push:
     branches: [ ]
+    tags:
+      - v*
   pull_request:
     branches: [ master ]
   workflow_call:
@@ -67,3 +69,12 @@ jobs:
 
         # View its dependencies
         dpkg-deb -f grub-reboot-picker_${version}_all.deb Depends
+
+    - name: Upload to GitHub Releases
+      if: startsWith(github.ref, 'refs/tags/v')
+      uses: softprops/action-gh-release@v2
+      with:
+        make_latest: true
+        files: |
+          output/grub-reboot-picker_${{ env.version }}_all.deb
+        tag_name: ${{ github.ref }}

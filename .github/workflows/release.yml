@@ -1,64 +1,64 @@
 
-name: Upload Release Asset
+# name: Upload Release Asset
 
-on:
-  push:
-    # Sequence of patterns matched against refs/tags
-    tags:
-    - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+# on:
+#   push:
+#     # Sequence of patterns matched against refs/tags
+#     tags:
+#     - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
-jobs:
-  build:
-    name: Upload Release Asset
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
+# jobs:
+#   build:
+#     name: Upload Release Asset
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v2
 
-        # Set output so that asset upload step can read it
-      - name: Set version output
-        id: version_setter
-        run: source version.sh && echo "::set-output name=version::$version"
+#         # Set output so that asset upload step can read it
+#       - name: Set version output
+#         id: version_setter
+#         run: source version.sh && echo "::set-output name=version::$version"
         
-        # Set environment variable so that deb build steps can pick it up
-      - name: Set version environment
-        run: echo "version=${{ steps.version_setter.outputs.version }}" >> $GITHUB_ENV
+#         # Set environment variable so that deb build steps can pick it up
+#       - name: Set version environment
+#         run: echo "version=${{ steps.version_setter.outputs.version }}" >> $GITHUB_ENV
 
-      - name: Install dependencies
-        run: sudo apt-get -y install dpkg-dev fakeroot debhelper python3-all dh-python lintian devscripts python3-hatchling pybuild-plugin-pyproject build-essential
+#       - name: Install dependencies
+#         run: sudo apt-get -y install dpkg-dev fakeroot debhelper python3-all dh-python lintian devscripts python3-hatchling pybuild-plugin-pyproject build-essential
 
-      - name: Build the deb
-        run: python3 setup.py --command-packages=stdeb.command bdist_deb
+#       - name: Build the deb
+#         run: python3 setup.py --command-packages=stdeb.command bdist_deb
     
-      - name: Lint the deb
-        run: lintian deb_dist/grub-reboot-picker_$version-1_all.deb
+#       - name: Lint the deb
+#         run: lintian deb_dist/grub-reboot-picker_$version-1_all.deb
     
-      - name: Inspect the deb
-        run: dpkg -I deb_dist/grub-reboot-picker_$version-1_all.deb
-      - name: Create a Release
-        id: create-release
-        uses: softprops/action-gh-release@v2
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          make_latest: true
-          files: |
-            deb_dist/grub-reboot-picker_${{ steps.version_setter.outputs.version }}-1_all.deb
-      # - name: Create Release
-      #   id: create_release
-      #   uses: actions/create-release@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     tag_name: ${{ github.ref }}
-      #     release_name: Release ${{ github.ref }}
-      #     draft: false
-      #     prerelease: false
-      # - name: Upload Release Asset
-      #   id: upload-release-asset 
-      #   uses: actions/upload-release-asset@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-      #     asset_path: deb_dist/grub-reboot-picker_${{ steps.version_setter.outputs.version }}-1_all.deb
-      #     asset_name: grub-reboot-picker.deb
-      #     asset_content_type: application/vnd.debian.binary-package
+#       - name: Inspect the deb
+#         run: dpkg -I deb_dist/grub-reboot-picker_$version-1_all.deb
+#       - name: Create a Release
+#         id: create-release
+#         uses: softprops/action-gh-release@v2
+#         if: startsWith(github.ref, 'refs/tags/')
+#         with:
+#           make_latest: true
+#           files: |
+#             deb_dist/grub-reboot-picker_${{ steps.version_setter.outputs.version }}-1_all.deb
+#       # - name: Create Release
+#       #   id: create_release
+#       #   uses: actions/create-release@v1
+#       #   env:
+#       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#       #   with:
+#       #     tag_name: ${{ github.ref }}
+#       #     release_name: Release ${{ github.ref }}
+#       #     draft: false
+#       #     prerelease: false
+#       # - name: Upload Release Asset
+#       #   id: upload-release-asset 
+#       #   uses: actions/upload-release-asset@v1
+#       #   env:
+#       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#       #   with:
+#       #     upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+#       #     asset_path: deb_dist/grub-reboot-picker_${{ steps.version_setter.outputs.version }}-1_all.deb
+#       #     asset_name: grub-reboot-picker.deb
+#       #     asset_content_type: application/vnd.debian.binary-package
