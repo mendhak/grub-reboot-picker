@@ -110,8 +110,8 @@ jobs:
     - name: Upload
       uses: actions/upload-artifact@v4
       with:
-        name: grub-reboot-picker_${{ needs.build.outputs.version }}_all.deb
-        path: grub-reboot-picker_${{ needs.build.outputs.version }}_all.deb
+        name: grub-reboot-picker_${{ needs.build.outputs.version }}_all.deb.cosign.bundle
+        path: grub-reboot-picker_${{ needs.build.outputs.version }}_all.deb.cosign.bundle
         retention-days: 7
     - name: Upload to GitHub Releases
       uses: softprops/action-gh-release@v2
