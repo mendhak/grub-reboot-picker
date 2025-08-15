@@ -99,6 +99,8 @@ jobs:
       id: attest
       with:
         subject-path: grub-reboot-picker_${{ needs.build.outputs.version }}_all.deb
+    - name: Copy cosign bundle
+      run: cp ${{ steps.attest.outputs.bundle-path }} grub-reboot-picker_${{ needs.build.outputs.version }}_all.deb.cosign.bundle
     - name: Get LOGINDEX
       id: logindex
       run: |
@@ -120,3 +122,10 @@ jobs:
           ${{ steps.attest.outputs.bundle-path }}
         tag_name: ${{ github.ref_name}}
         name: Release ${{ github.ref_name}}
+        body: |
+            Verification: 
+            ```
+            cosign verify-blob grub-reboot-picker_${{ needs.build.outputs.version }}_all.deb --bundle grub-reboot-picker_${{ needs.build.outputs.version }}_all.deb.cosign.bundle --new-bundle-format --cert-oidc-issuer https://token.actions.githubusercontent.com --cert-identity https://github.com/${{ github.workflow_ref }}
+            ```
+            
+            [Rekor transparency log](https://search.sigstore.dev?logIndex=${{ steps.logindex.outputs.REKOR_LOGINDEX }})
