@@ -93,7 +93,7 @@ jobs:
 
     steps:
     - name: Download artifact
-      uses: actions/download-artifact@v4    
+      uses: actions/download-artifact@v5
     
     - name: Cosign Attestation of the DEB
       uses: actions/attest-build-provenance@v1
