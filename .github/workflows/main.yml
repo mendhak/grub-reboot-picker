@@ -79,6 +79,7 @@ jobs:
       with:
         name: grub-reboot-picker_${{ steps.set-version.outputs.version }}_all.deb
         path: output/grub-reboot-picker_${{ steps.set-version.outputs.version }}_all.deb
+        retention-days: 7
 
   create-release:
     if: startsWith(github.ref, 'refs/tags/v')
@@ -99,27 +100,26 @@ jobs:
       id: attest
       with:
         subject-path: grub-reboot-picker_${{ needs.build.outputs.version }}_all.deb
-    - name: Copy cosign bundle
-      run: cp ${{ steps.attest.outputs.bundle-path }} grub-reboot-picker_${{ needs.build.outputs.version }}_all.deb.cosign.bundle
+    - name: Rename cosign bundle
+      run: mv ${{ steps.attest.outputs.bundle-path }} grub-reboot-picker_${{ needs.build.outputs.version }}_all.deb.cosign.bundle
     - name: Get LOGINDEX
       id: logindex
       run: |
-        logIndex=$(jq -r '.verificationMaterial.tlogEntries[0].logIndex' < ${{ steps.attest.outputs.bundle-path }})
+        logIndex=$(jq -r '.verificationMaterial.tlogEntries[0].logIndex' < grub-reboot-picker_${{ needs.build.outputs.version }}_all.deb.cosign.bundle)
         echo "REKOR_LOGINDEX=$logIndex" >> "$GITHUB_OUTPUT"
     - name: Upload
       uses: actions/upload-artifact@v4
       with:
-        name: Build Artifacts
-        path: |
-          ${{ steps.attest.outputs.bundle-path }}
-        retention-days: 1
+        name: grub-reboot-picker_${{ needs.build.outputs.version }}_all.deb
+        path: grub-reboot-picker_${{ needs.build.outputs.version }}_all.deb
+        retention-days: 7
     - name: Upload to GitHub Releases
       uses: softprops/action-gh-release@v2
       with:
         make_latest: true
         files: |
           grub-reboot-picker_${{ needs.build.outputs.version }}_all.deb
-          ${{ steps.attest.outputs.bundle-path }}
+          grub-reboot-picker_${{ needs.build.outputs.version }}_all.deb.cosign.bundle
         tag_name: ${{ github.ref_name}}
         name: Release ${{ github.ref_name}}
         body: |
