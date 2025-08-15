@@ -101,7 +101,9 @@ jobs:
       with:
         subject-path: grub-reboot-picker_${{ needs.build.outputs.version }}_all.deb
     - name: Rename cosign bundle
-      run: mv ${{ steps.attest.outputs.bundle-path }} grub-reboot-picker_${{ needs.build.outputs.version }}_all.deb.cosign.bundle
+      run: |
+        mv ${{ steps.attest.outputs.bundle-path }} grub-reboot-picker_${{ needs.build.outputs.version }}_all.deb.cosign.bundle
+        ls -lah
     - name: Get LOGINDEX
       id: logindex
       run: |
