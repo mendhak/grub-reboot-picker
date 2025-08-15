@@ -77,4 +77,4 @@ jobs:
         make_latest: true
         files: |
           output/grub-reboot-picker_${{ env.version }}_all.deb
-        tag_name: ${{ github.ref }}
+        tag_name: ${{ github.ref_name}}
