@@ -1,4 +1,12 @@
-grub-reboot-picker (0.0.10+noble) noble; urgency=low
+grub-reboot-picker (0.0.11+questing) questing; urgency=low
+
+  * Icon now included in package
+  * Including the icon allows it to work on Linux Mint.
+  * Use Ayatana app indicator if available.
+
+ -- Mendhak <mendhak@users.noreply.github.com>  Sun, 04 Oct 2026 00:00:00 +0000
+
+grub-reboot-picker (0.0.10+questing) questing; urgency=low
 
   * Support for molly-guard
   * Support for molly-guard by timur-tabi.
@@ -7,7 +15,7 @@ grub-reboot-picker (0.0.10+noble) noble; urgency=low
 
  -- Mendhak <mendhak@users.noreply.github.com>  Sat, 02 Aug 2025 00:00:00 +0000
 
-grub-reboot-picker (0.0.9+noble) noble; urgency=low
+grub-reboot-picker (0.0.9+questing) questing; urgency=low
 
   * Parsing and menu hover bugfix
   * Bugfix, some menu items weren't parsed correctly.
@@ -17,35 +25,35 @@ grub-reboot-picker (0.0.9+noble) noble; urgency=low
 
  -- Mendhak <mendhak@users.noreply.github.com>  Sat, 03 Aug 2024 00:00:00 +0000
 
-grub-reboot-picker (0.0.8+noble) noble; urgency=low
+grub-reboot-picker (0.0.8+questing) questing; urgency=low
 
   * Build for Ubuntu 23.04
   * Rebuilt package for Ubuntu 23.04 Lunar Lobster
 
  -- Mendhak <mendhak@users.noreply.github.com>  Sat, 22 Jul 2023 00:00:00 +0000
 
-grub-reboot-picker (0.0.7+noble) noble; urgency=low
+grub-reboot-picker (0.0.7+questing) questing; urgency=low
 
   * Build for Ubuntu 22.04
   * Rebuilt package for Ubuntu 22.04 Jammy Jellyfish
 
  -- Mendhak <mendhak@users.noreply.github.com>  Mon, 22 Aug 2022 00:00:00 +0000
 
-grub-reboot-picker (0.0.6+noble) noble; urgency=low
+grub-reboot-picker (0.0.6+questing) questing; urgency=low
 
   * Shutdown option
   * Added menu item for shutdown, as a convenience function.
 
  -- Mendhak <mendhak@users.noreply.github.com>  Sat, 06 Jun 2020 00:00:00 +0000
 
-grub-reboot-picker (0.0.2+noble) noble; urgency=low
+grub-reboot-picker (0.0.2+questing) questing; urgency=low
 
   * Ability to reboot into sub menu items
   * Ability to reboot into the submenus of OSes. For example different kernels.
 
  -- Mendhak <mendhak@users.noreply.github.com>  Sat, 23 May 2020 00:00:00 +0000
 
-grub-reboot-picker (0.0.1+noble) noble; urgency=low
+grub-reboot-picker (0.0.1+questing) questing; urgency=low
 
   * A basic tray application using App Indicator
   * Basic application that reads the grub config and displays items in the menu.

@@ -25,4 +25,8 @@
   Will use the .no-molly-guard version of reboot command if exists.
   Use ayatana app indicator if available.
 
+  * 0.0.11 (2026-10-04): Icon now included in package
+  Including the icon allows it to work on Linux Mint. 
+  Use Ayatana app indicator if available.
+
   
