@@ -149,6 +149,9 @@ def do_shutdown(_):
 def quit(_):
     Gtk.main_quit()
 
+#icon_name = os.path.abspath("../assets/un-reboot-icon.svg")
+#print(icon_name)
+
 
 indicator = AppIndicator3.Indicator.new(
     "customtray", icon_name,
