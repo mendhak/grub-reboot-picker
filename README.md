@@ -62,7 +62,8 @@ cd grub-reboot-picker
 sudo ./grub-reboot-picker.py
 ```
 
-Sudo is required here because grub.cfg may not be readable (0600 permission)
+You'll get prompted because the script wants to run `grub-mkconfig` which generates the grub config output. 
+Alternatively run the script with sudo so that you don't get prompted.  
 
 ### Running it with molly-guard
 
