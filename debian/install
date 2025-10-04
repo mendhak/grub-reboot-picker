@@ -2,3 +2,4 @@ grub-reboot-picker/grub-reboot-picker.py usr/sbin/
 com.mendhak.grubrebootpicker.policy usr/share/polkit-1/actions/
 com.mendhak.grubrebootpicker.desktop etc/xdg/autostart/
 com.mendhak.grubrebootpicker.desktop usr/share/applications/
+assets/grub-reboot-picker.svg usr/share/icons/hicolor/scalable/apps/

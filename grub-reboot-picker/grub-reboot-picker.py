@@ -149,9 +149,14 @@ def do_shutdown(_):
 def quit(_):
     Gtk.main_quit()
 
-#icon_name = os.path.abspath("../assets/un-reboot-icon.svg")
-#print(icon_name)
 
+# The icon ought to get deployed to /usr/share/icons/hicolor/scalable/apps/, 
+# so it can just be referenced by name. 
+icon_name = "grub-reboot-picker"
+
+# Local development
+if os.path.exists("./assets/grub-reboot-picker.svg"):
+    icon_name = os.path.abspath("./assets/grub-reboot-picker.svg")
 
 indicator = AppIndicator3.Indicator.new(
     "customtray", icon_name,
