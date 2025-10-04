@@ -115,6 +115,16 @@ jobs:
         name: grub-reboot-picker_${{ needs.build.outputs.version }}_all.deb.cosign.bundle
         path: grub-reboot-picker_${{ needs.build.outputs.version }}_all.deb.cosign.bundle
         retention-days: 7
+    - name: Generate Release Notes
+      run: |
+        python3 other/generate_changelog.py print-latest-changelog-entry > ${{ github.workspace }}-CHANGELOG.txt
+
+        echo "Verification:" >> ${{ github.workspace }}-CHANGELOG.txt
+        echo "```" >> ${{ github.workspace }}-CHANGELOG.txt
+        echo "cosign verify-blob grub-reboot-picker_${{ needs.build.outputs.version }}_all.deb --bundle grub-reboot-picker_${{ needs.build.outputs.version }}_all.deb.cosign.bundle --new-bundle-format --cert-oidc-issuer https://token.actions.githubusercontent.com --cert-identity https://github.com/${{ github.workflow_ref }}" >> ${{ github.workspace }}-CHANGELOG.txt
+        echo "```" >> ${{ github.workspace }}-CHANGELOG.txt
+        echo "[Rekor transparency log](https://search.sigstore.dev?logIndex=${{ steps.logindex.outputs.REKOR_LOGINDEX }})" >> ${{ github.workspace }}-CHANGELOG.txt
+
     - name: Upload to GitHub Releases
       uses: softprops/action-gh-release@v2
       with:
@@ -124,11 +134,4 @@ jobs:
           grub-reboot-picker_${{ needs.build.outputs.version }}_all.deb.cosign.bundle
         tag_name: ${{ github.ref_name}}
         name: Release ${{ github.ref_name}}
-        generate_release_notes: true
-        body: |
-            Verification: 
-            ```
-            cosign verify-blob grub-reboot-picker_${{ needs.build.outputs.version }}_all.deb --bundle grub-reboot-picker_${{ needs.build.outputs.version }}_all.deb.cosign.bundle --new-bundle-format --cert-oidc-issuer https://token.actions.githubusercontent.com --cert-identity https://github.com/${{ github.workflow_ref }}
-            ```
-            
-            [Rekor transparency log](https://search.sigstore.dev?logIndex=${{ steps.logindex.outputs.REKOR_LOGINDEX }})
+        body_path: ${{ github.workspace }}-CHANGELOG.txt
