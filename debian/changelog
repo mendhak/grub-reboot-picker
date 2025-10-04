@@ -1,12 +1,12 @@
 grub-reboot-picker (0.0.11+questing) questing; urgency=low
 
-  * Icon now included in package
-  * Including the icon allows it to work on Linux Mint.
-  * Use Ayatana app indicator if available.
-  * Run grub-reboot-picker without sudo.
-  * Group the memory test items together.
+  * Icon is now bundled with the package
+  * This also allows it to work on Linux Mint.
+  * Uses Ayatana app indicator if available.
+  * grub-reboot-picker now runs as normal user instead of root.
+  * The memory test items are now grouped together.
 
- -- Mendhak <mendhak@users.noreply.github.com>  Sun, 04 Oct 2026 00:00:00 +0000
+ -- Mendhak <mendhak@users.noreply.github.com>  Sat, 04 Oct 2025 00:00:00 +0000
 
 grub-reboot-picker (0.0.10+questing) questing; urgency=low
 
