@@ -118,7 +118,7 @@ jobs:
     - name: Generate Release Notes
       run: |
         # Extract the changelog from the deb
-        dpkg-deb -R grub-reboot-picker_${version}_all.deb extracted/
+        dpkg-deb -R grub-reboot-picker_${{ needs.build.outputs.version }}_all.deb extracted/
         # Gets changelog, removes the first version line and the last signature line. 
         zless extracted/usr/share/doc/grub-reboot-picker/changelog.gz  | sed '/-- Mendhak/,$d' | tail -n +2 > ${{ github.workspace }}-CHANGELOG.txt
 
