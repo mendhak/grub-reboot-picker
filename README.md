@@ -8,12 +8,18 @@ Basically it's a wrapper around `grub-reboot`.
 
 ## Install it
 
-apt install:
+You can apt install it [from the PPA](https://launchpad.net/~mendhak/+archive/ubuntu/ppa).
 
 ```
 sudo add-apt-repository ppa:mendhak/ppa
 sudo apt update
 sudo apt install grub-reboot-picker
+```
+
+You can also download the .deb file from the Releases page and install it.
+
+```
+sudo apt install ./grub-reboot-picker_0.0.10+noble_all.deb 
 ```
 
 
