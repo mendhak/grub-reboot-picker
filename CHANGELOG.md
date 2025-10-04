@@ -25,8 +25,8 @@
   Will use the .no-molly-guard version of reboot command if exists.
   Use ayatana app indicator if available.
 
-  * 0.0.11 (2026-10-04): Icon now included in package
-  Including the icon allows it to work on Linux Mint. 
-  Use Ayatana app indicator if available.
-  Run grub-reboot-picker without sudo.  
-  Group the memory test items together. 
+  * 0.0.11 (2026-10-04): Icon now included in the package
+  This allows it to work on Linux Mint.
+  Uses Ayatana app indicator if available.
+  grub-reboot-picker now runs as normal user.
+  Groups the memory test items together.
