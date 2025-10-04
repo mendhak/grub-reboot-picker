@@ -16,15 +16,11 @@ except (ValueError, ImportError):
 
 SHOW_GRUB_MENU_SUB_MENUS = True
 DEVELOPMENT_MODE = False
-GRUB_CONFIG_PATH = "/boot/grub/grub.cfg"
-if DEVELOPMENT_MODE:
-    GRUB_CONFIG_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)),  "grub.test3.cfg")
-    GRUB_CONFIG_PATH = "/boot/grub/grub.cfg"
 
 icon_name = "un-reboot"
 
 
-def get_all_grub_entries(file_path, include_submenus=True):
+def get_all_grub_entries(include_submenus=True):
     """
     Build a dictionary of Grub menu items with sub menu items if applicable.
     Simply if it has child items it's a 'submenu' else it's just a top level menu.
@@ -87,7 +83,7 @@ def get_all_grub_entries(file_path, include_submenus=True):
 def build_menu():
     menu = Gtk.Menu()
 
-    grub_entries = get_all_grub_entries(GRUB_CONFIG_PATH, SHOW_GRUB_MENU_SUB_MENUS)
+    grub_entries = get_all_grub_entries(SHOW_GRUB_MENU_SUB_MENUS)
 
     print(grub_entries)
 

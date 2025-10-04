@@ -28,5 +28,4 @@
   * 0.0.11 (2026-10-04): Icon now included in package
   Including the icon allows it to work on Linux Mint. 
   Use Ayatana app indicator if available.
-
-  
+  Run grub-reboot-picker without sudo.  

@@ -3,6 +3,7 @@ grub-reboot-picker (0.0.11+questing) questing; urgency=low
   * Icon now included in package
   * Including the icon allows it to work on Linux Mint.
   * Use Ayatana app indicator if available.
+  * Run grub-reboot-picker without sudo.
 
  -- Mendhak <mendhak@users.noreply.github.com>  Sun, 04 Oct 2026 00:00:00 +0000
 
