@@ -2,6 +2,7 @@
 import gi
 import os
 import re
+import subprocess
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 
@@ -38,12 +39,13 @@ def get_all_grub_entries(file_path, include_submenus=True):
         'UEFI Firmware Settings': []
     }
     """
-    with open(file_path, 'r') as file:
-        lines = file.readlines()
 
-    menu_pattern = re.compile("^\\s*menuentry ['\"]([^'\"]*)['\"]")
-    submenu_pattern = re.compile("^\\s*submenu ['\"]([^']*)['\"]")
-    closing_brace_pattern = re.compile("^\\s*}")
+    grub_mkconfig_output = subprocess.check_output(["pkexec", "grub-mkconfig"], stderr=subprocess.STDOUT)
+    lines = grub_mkconfig_output.decode("utf-8").splitlines()
+
+    menu_pattern = re.compile(r"^\s*menuentry ['\"]([^'\"]*)['\"]")
+    submenu_pattern = re.compile(r"^\s*submenu ['\"]([^'\"]*)['\"]")
+    closing_brace_pattern = re.compile(r"^\s*}")
 
     menu_entries = {}
 
