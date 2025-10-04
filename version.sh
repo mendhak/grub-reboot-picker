@@ -1,3 +1,3 @@
-export suite=questing
+export suite=noble
 export pkgversion=0.0.11
 export version=$pkgversion+$suite
