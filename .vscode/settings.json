@@ -1,7 +1,5 @@
 {
-    "python.linting.enabled": true,
-    "python.formatting.provider": "yapf",
-    "python.linting.pylintEnabled": false,
-    "python.linting.flake8Enabled": true,
-    "python.linting.flake8Args": ["--config=flake8.config"]
+    "flake8.args": ["--config=flake8.config"],
+    "flake8.enabled": true
+    
 }

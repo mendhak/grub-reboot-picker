@@ -22,7 +22,7 @@ icon_name = "un-reboot"
 
 def get_all_grub_entries(include_submenus=True):
     """
-    Runs grub-mkconfig and gets the grub output. 
+    Runs grub-mkconfig and gets the grub output.
     Build a dictionary of Grub menu items with sub menu items if applicable.
     Simply if it has child items it's a 'submenu' else it's just a top level menu.
     {
@@ -83,10 +83,10 @@ def get_all_grub_entries(include_submenus=True):
 
 def get_grub_entries_with_args(grub_entries):
     """
-    Returns a list of Grub menu items with the arguments for grub-reboot. 
+    Returns a list of Grub menu items with the arguments for grub-reboot.
     [
         {
-        "title": "Ubuntu", 
+        "title": "Ubuntu",
         "grub_reboot_args": "Ubuntu"
         },
         {
@@ -214,8 +214,8 @@ def quit(_):
     Gtk.main_quit()
 
 
-# The icon ought to get deployed to /usr/share/icons/hicolor/scalable/apps/, 
-# so it can just be referenced by name. 
+# The icon ought to get deployed to /usr/share/icons/hicolor/scalable/apps/,
+# so it can just be referenced by name.
 icon_name = "grub-reboot-picker"
 
 # Local development
