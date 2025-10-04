@@ -15,7 +15,7 @@ except (ValueError, ImportError):
 
 
 SHOW_GRUB_MENU_SUB_MENUS = True
-DEVELOPMENT_MODE = False
+DEVELOPMENT_MODE = True
 
 icon_name = "un-reboot"
 
@@ -80,6 +80,7 @@ def get_all_grub_entries(include_submenus=True):
 
     return menu_entries
 
+
 def get_grub_entries_with_args(grub_entries):
     """
     Returns a list of Grub menu items with the arguments for grub-reboot. 
@@ -131,7 +132,7 @@ def get_grub_entries_with_args(grub_entries):
                 "title": title,
                 "grub_reboot_args": title,
             })
-    
+
     return grub_entries_with_args
 
 
@@ -193,7 +194,7 @@ def molly_command(command):
         return command
 
 
-def do_grub_reboot(grub_reboot_args):
+def do_grub_reboot(_, grub_reboot_args):
     reboot_command = molly_command("reboot")
 
     if DEVELOPMENT_MODE:

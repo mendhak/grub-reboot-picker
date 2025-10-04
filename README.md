@@ -147,8 +147,7 @@ dpkg-parsechangelog -l debian/changelog
 dpkg-buildpackage -uc -us
 
 # Grab the deb and dsc files
-mkdir -p output
-mv ../grub-reboot-picker_${version}* output/
+mkdir -p output; mv ../grub-reboot-picker_${version}* output/
 
 ```
 
