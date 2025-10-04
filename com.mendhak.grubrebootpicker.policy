@@ -6,7 +6,7 @@
     <action id="org.freedesktop.policykit.pkexec.grub-reboot">
         <description>Run grub-reboot</description>
         <message>Authentication is required to run grub-reboot</message>
-        <icon_name>un-reboot</icon_name>
+        <icon_name>grub-reboot-picker</icon_name>
         <defaults>
             <allow_any>yes</allow_any>
             <allow_inactive>yes</allow_inactive>
@@ -18,7 +18,7 @@
     <action id="org.freedesktop.policykit.pkexec.grub-mkconfig">
         <description>Run grub-mkconfig</description>
         <message>Run grub-mkconfig to read the grub entries</message>
-        <icon_name>un-reboot</icon_name>
+        <icon_name>grub-reboot-picker</icon_name>
         <defaults>
             <allow_any>yes</allow_any>
             <allow_inactive>yes</allow_inactive>
@@ -30,7 +30,7 @@
     <action id="org.freedesktop.policykit.pkexec.reboot">
         <description>Run reboot</description>
         <message>Authentication is required to run reboot</message>
-        <icon_name>un-reboot</icon_name>
+        <icon_name>grub-reboot-picker</icon_name>
         <defaults>
             <allow_any>yes</allow_any>
             <allow_inactive>yes</allow_inactive>
@@ -42,7 +42,7 @@
     <action id="org.freedesktop.policykit.pkexec.shutdown">
         <description>Run Shutdown</description>
         <message>Authentication is required to run shutdown</message>
-        <icon_name>un-reboot</icon_name>
+        <icon_name>grub-reboot-picker</icon_name>
         <defaults>
             <allow_any>yes</allow_any>
             <allow_inactive>yes</allow_inactive>

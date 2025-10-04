@@ -17,8 +17,6 @@ except (ValueError, ImportError):
 SHOW_GRUB_MENU_SUB_MENUS = True
 DEVELOPMENT_MODE = os.environ.get("DEBUG", False)
 
-icon_name = "un-reboot"
-
 
 def get_all_grub_entries(include_submenus=True):
     """
