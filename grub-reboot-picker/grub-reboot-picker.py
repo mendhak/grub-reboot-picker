@@ -15,7 +15,7 @@ except (ValueError, ImportError):
 
 
 SHOW_GRUB_MENU_SUB_MENUS = True
-DEVELOPMENT_MODE = True
+DEVELOPMENT_MODE = os.environ.get("DEBUG", False)
 
 icon_name = "un-reboot"
 
@@ -197,8 +197,7 @@ def molly_command(command):
 def do_grub_reboot(_, grub_reboot_args):
     reboot_command = molly_command("reboot")
 
-    if DEVELOPMENT_MODE:
-        print("pkexec grub-reboot '{}' && sleep 1 && pkexec {}".format(grub_reboot_args, reboot_command))
+    print("pkexec grub-reboot '{}' && sleep 1 && pkexec {}".format(grub_reboot_args, reboot_command))
     if not DEVELOPMENT_MODE:
         os.system("pkexec grub-reboot '{}' && sleep 1 && pkexec {}".format(grub_reboot_args, reboot_command))
 
@@ -206,8 +205,7 @@ def do_grub_reboot(_, grub_reboot_args):
 def do_shutdown(_):
     shutdown_command = molly_command("shutdown")
 
-    if DEVELOPMENT_MODE:
-        print("sleep 1 && pkexec {} -h now".format(shutdown_command))
+    print("sleep 1 && pkexec {} -h now".format(shutdown_command))
     if not DEVELOPMENT_MODE:
         os.system("sleep 1 && pkexec {} -h now".format(shutdown_command))
 
