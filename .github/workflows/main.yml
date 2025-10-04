@@ -124,7 +124,9 @@ jobs:
 
         echo "Verification:" >> ${{ github.workspace }}-CHANGELOG.txt
         
-        echo "    cosign verify-blob grub-reboot-picker_${{ needs.build.outputs.version }}_all.deb --bundle grub-reboot-picker_${{ needs.build.outputs.version }}_all.deb.cosign.bundle --new-bundle-format --cert-oidc-issuer https://token.actions.githubusercontent.com --cert-identity https://github.com/${{ github.workflow_ref }}" >> ${{ github.workspace }}-CHANGELOG.txt
+        echo "```
+        cosign verify-blob grub-reboot-picker_${{ needs.build.outputs.version }}_all.deb --bundle grub-reboot-picker_${{ needs.build.outputs.version }}_all.deb.cosign.bundle --new-bundle-format --cert-oidc-issuer https://token.actions.githubusercontent.com --cert-identity https://github.com/${{ github.workflow_ref }}
+        ```" >> ${{ github.workspace }}-CHANGELOG.txt
         
         echo "[Rekor transparency log](https://search.sigstore.dev?logIndex=${{ steps.logindex.outputs.REKOR_LOGINDEX }})" >> ${{ github.workspace }}-CHANGELOG.txt
 
