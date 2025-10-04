@@ -117,7 +117,7 @@ jobs:
         retention-days: 7
     - name: Generate Release Notes
       run: |
-        python3 other/generate_changelog.py print-latest-changelog-entry > ${{ github.workspace }}-CHANGELOG.txt
+        python3 ${{ github.workspace }}/other/generate_changelog.py print-latest-changelog-entry > ${{ github.workspace }}-CHANGELOG.txt
 
         echo "Verification:" >> ${{ github.workspace }}-CHANGELOG.txt
         echo "```" >> ${{ github.workspace }}-CHANGELOG.txt
