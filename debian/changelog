@@ -1,8 +1,19 @@
+grub-reboot-picker (0.0.11+noble) noble; urgency=low
+
+  * Icon is now bundled with the package
+  * This also allows it to work on Linux Mint.
+  * Uses Ayatana app indicator if available.
+  * grub-reboot-picker now runs as normal user instead of root.
+  * The memory test items are now grouped together.
+
+ -- Mendhak <mendhak@users.noreply.github.com>  Sat, 04 Oct 2025 00:00:00 +0000
+
 grub-reboot-picker (0.0.10+noble) noble; urgency=low
 
   * Support for molly-guard
   * Support for molly-guard by timur-tabi.
   * Will use the .no-molly-guard version of reboot command if exists.
+  * Use ayatana app indicator if available.
 
  -- Mendhak <mendhak@users.noreply.github.com>  Sat, 02 Aug 2025 00:00:00 +0000
 

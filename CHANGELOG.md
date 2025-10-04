@@ -23,4 +23,10 @@
   * 0.0.10 (2025-08-02): Support for molly-guard
   Support for molly-guard by timur-tabi.
   Will use the .no-molly-guard version of reboot command if exists.
-  
+  Use ayatana app indicator if available.
+
+  * 0.0.11 (2025-10-04): Icon is now bundled with the package
+  This also allows it to work on Linux Mint.
+  Uses Ayatana app indicator if available.
+  grub-reboot-picker now runs as normal user instead of root.
+  The memory test items are now grouped together.

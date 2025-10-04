@@ -6,7 +6,7 @@
     <action id="org.freedesktop.policykit.pkexec.grub-reboot">
         <description>Run grub-reboot</description>
         <message>Authentication is required to run grub-reboot</message>
-        <icon_name>un-reboot</icon_name>
+        <icon_name>grub-reboot-picker</icon_name>
         <defaults>
             <allow_any>yes</allow_any>
             <allow_inactive>yes</allow_inactive>
@@ -15,10 +15,22 @@
         <annotate key="org.freedesktop.policykit.exec.path">/usr/sbin/grub-reboot</annotate>
         <annotate key="org.freedesktop.policykit.exec.allow_gui">false</annotate>
     </action>
+    <action id="org.freedesktop.policykit.pkexec.grub-mkconfig">
+        <description>Run grub-mkconfig</description>
+        <message>Run grub-mkconfig to read the grub entries</message>
+        <icon_name>grub-reboot-picker</icon_name>
+        <defaults>
+            <allow_any>yes</allow_any>
+            <allow_inactive>yes</allow_inactive>
+            <allow_active>yes</allow_active>
+        </defaults>
+        <annotate key="org.freedesktop.policykit.exec.path">/usr/sbin/grub-mkconfig</annotate>
+        <annotate key="org.freedesktop.policykit.exec.allow_gui">false</annotate>
+    </action>
     <action id="org.freedesktop.policykit.pkexec.reboot">
         <description>Run reboot</description>
         <message>Authentication is required to run reboot</message>
-        <icon_name>un-reboot</icon_name>
+        <icon_name>grub-reboot-picker</icon_name>
         <defaults>
             <allow_any>yes</allow_any>
             <allow_inactive>yes</allow_inactive>
@@ -30,25 +42,13 @@
     <action id="org.freedesktop.policykit.pkexec.shutdown">
         <description>Run Shutdown</description>
         <message>Authentication is required to run shutdown</message>
-        <icon_name>un-reboot</icon_name>
+        <icon_name>grub-reboot-picker</icon_name>
         <defaults>
             <allow_any>yes</allow_any>
             <allow_inactive>yes</allow_inactive>
             <allow_active>yes</allow_active>
         </defaults>
         <annotate key="org.freedesktop.policykit.exec.path">/usr/sbin/shutdown</annotate>
-        <annotate key="org.freedesktop.policykit.exec.allow_gui">false</annotate>
-    </action>
-    <action id="org.freedesktop.policykit.pkexec.grub-reboot-picker">
-        <description>Run grub-reboot-picker</description>
-        <message>Run grub-reboot-picker so it can read grub.cfg</message>
-        <icon_name>un-reboot</icon_name>
-        <defaults>
-            <allow_any>yes</allow_any>
-            <allow_inactive>yes</allow_inactive>
-            <allow_active>yes</allow_active>
-        </defaults>
-        <annotate key="org.freedesktop.policykit.exec.path">/usr/sbin/grub-reboot-picker</annotate>
         <annotate key="org.freedesktop.policykit.exec.allow_gui">false</annotate>
     </action>
 </policyconfig>

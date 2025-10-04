@@ -2,18 +2,24 @@
 
 This utility is an app indicator (tray icon) to help you reboot into other OSes, or UEFI/BIOS, or the same OS.  
 Instead of picking the OS you want during reboot at the grub menu, you can just preselect it from the menu here.  
-Basically it's a wrapper around `grub-reboot`. I've only tested this on Ubuntu 20.04, 22.04, 24.04. 
+Basically it's a wrapper around `grub-reboot`. 
 
 ![screenshot](assets/screenshot.png) 
 
 ## Install it
 
-apt install:
+You can apt install it [from the PPA](https://launchpad.net/~mendhak/+archive/ubuntu/ppa).
 
 ```
 sudo add-apt-repository ppa:mendhak/ppa
 sudo apt update
 sudo apt install grub-reboot-picker
+```
+
+You can also download the .deb file from the Releases page and install it.
+
+```
+sudo apt install ./grub-reboot-picker_0.0.10+noble_all.deb 
 ```
 
 
@@ -53,7 +59,6 @@ First get the dependencies
 
 ```
 sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-3.0 gir1.2-appindicator3-0.1
-
 ```
 
 Clone this repo, then run the python script. 
@@ -63,7 +68,8 @@ cd grub-reboot-picker
 sudo ./grub-reboot-picker.py
 ```
 
-Sudo is required here because grub.cfg may not be readable (0600 permission)
+You'll get prompted because the script wants to run `grub-mkconfig` which generates the grub config output. 
+Alternatively run the script with sudo so that you don't get prompted.  
 
 ### Running it with molly-guard
 
@@ -147,8 +153,7 @@ dpkg-parsechangelog -l debian/changelog
 dpkg-buildpackage -uc -us
 
 # Grab the deb and dsc files
-mkdir -p output
-mv ../grub-reboot-picker_${version}* output/
+mkdir -p output; mv ../grub-reboot-picker_${version}* output/
 
 ```
 
