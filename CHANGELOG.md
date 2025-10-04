@@ -29,3 +29,4 @@
   Including the icon allows it to work on Linux Mint. 
   Use Ayatana app indicator if available.
   Run grub-reboot-picker without sudo.  
+  Group the memory test items together. 

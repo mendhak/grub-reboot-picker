@@ -22,6 +22,7 @@ icon_name = "un-reboot"
 
 def get_all_grub_entries(include_submenus=True):
     """
+    Runs grub-mkconfig and gets the grub output. 
     Build a dictionary of Grub menu items with sub menu items if applicable.
     Simply if it has child items it's a 'submenu' else it's just a top level menu.
     {
@@ -79,27 +80,95 @@ def get_all_grub_entries(include_submenus=True):
 
     return menu_entries
 
+def get_grub_entries_with_args(grub_entries):
+    """
+    Returns a list of Grub menu items with the arguments for grub-reboot. 
+    [
+        {
+        "title": "Ubuntu", 
+        "grub_reboot_args": "Ubuntu"
+        },
+        {
+            "title": "Advanced options for Ubuntu",
+            "children": [
+                {
+                "title": "Ubuntu, with Linux 6.8.0-39-generic",
+                "grub_reboot_args": "Advanced options for Ubuntu>Ubuntu, with Linux 6.8.0-39-generic",
+                },
+                {
+                "title": "Ubuntu, with Linux 6.8.0-39-generic (recovery mode)",
+                "grub_reboot_args": "Advanced options for Ubuntu>Ubuntu, with Linux 6.8.0-39-generic (recovery mode)",
+        },
+        {
+            "title": "Memory test (memtest86+x64.bin)",
+            "grub_reboot_args": "Memory test (memtest86+x64.bin)",
+        },
+        {
+            "title": "Memory test (memtest86+x64.bin, serial console)",
+            "grub_reboot_args": "Memory test (memtest86+x64.bin, serial console)",
+        },
+        {
+            "title": "UEFI Firmware Settings",
+            "grub_reboot_args": "UEFI Firmware Settings",
+    ]
+    """
+
+    grub_entries_with_args = []
+    for title, children in grub_entries:
+        if len(children) > 0:
+            child_entries = []
+            for child in children:
+                child_entries.append({
+                    "title": child,
+                    "grub_reboot_args": f"{title}>{child}",
+                })
+            grub_entries_with_args.append({
+                "title": title,
+                "children": child_entries
+            })
+        else:
+            grub_entries_with_args.append({
+                "title": title,
+                "grub_reboot_args": title,
+            })
+    
+    return grub_entries_with_args
+
 
 def build_menu():
     menu = Gtk.Menu()
 
     grub_entries = get_all_grub_entries(SHOW_GRUB_MENU_SUB_MENUS)
+    grub_entries_with_args = get_grub_entries_with_args(grub_entries.items())
 
-    print(grub_entries)
+    print(grub_entries_with_args)
 
-    for grub_entry, grub_children in grub_entries.items():
-        menuitem = Gtk.MenuItem(label=grub_entry)
-        if len(grub_children) == 0:
-            menuitem.connect('activate', do_grub_reboot, grub_entry)
+    menu_item_memory_test = Gtk.MenuItem(label="Memory Test")
+    sub_menu_memory_test = Gtk.Menu()
+
+    for entries in grub_entries_with_args:
+
+        if "children" in entries and len(entries["children"]) > 0:
+            menu_item = Gtk.MenuItem(label=entries["title"])
+            sub_menu = Gtk.Menu()
+            for child in entries["children"]:
+                sub_menu_item = Gtk.MenuItem(label=child["title"])
+                sub_menu_item.connect('activate', do_grub_reboot, child["grub_reboot_args"])
+                sub_menu.append(sub_menu_item)
+            menu_item.set_submenu(sub_menu)
+            menu.append(menu_item)
+        elif entries["title"].startswith("Memory test"):
+            submenu_item_memory_test = Gtk.MenuItem(label=entries["title"])
+            submenu_item_memory_test.connect('activate', do_grub_reboot, entries["grub_reboot_args"])
+            sub_menu_memory_test.append(submenu_item_memory_test)
         else:
-            submenu = Gtk.Menu()
-            for grub_child in grub_children:
-                submenu_item = Gtk.MenuItem(label=grub_child)
-                submenu_item.connect('activate', do_grub_reboot, grub_child, grub_entry)
-                submenu.append(submenu_item)
-            menuitem.set_submenu(submenu)
+            menu_item = Gtk.MenuItem(label=entries["title"])
+            menu_item.connect('activate', do_grub_reboot, entries["grub_reboot_args"])
+            menu.append(menu_item)
 
-        menu.append(menuitem)
+    if len(sub_menu_memory_test.get_children()) > 0:
+        menu_item_memory_test.set_submenu(sub_menu_memory_test)
+        menu.append(menu_item_memory_test)
 
     shutdown_item = Gtk.MenuItem(label='Shutdown')
     shutdown_item.connect('activate', do_shutdown)
@@ -112,6 +181,7 @@ def build_menu():
     menu.show_all()
     return menu
 
+
 # Returns the correct version of the given command, depending on whether
 # molly-guard is installed.
 def molly_command(command):
@@ -122,18 +192,15 @@ def molly_command(command):
         # Maybe this should return "/sbin/command"
         return command
 
-def do_grub_reboot(menuitem, grub_entry, parent_grub_entry=None):
-    if parent_grub_entry is not None:
-        grub_reboot_value = "{}>{}".format(parent_grub_entry, grub_entry)
-    else:
-        grub_reboot_value = "{}".format(grub_entry)
 
+def do_grub_reboot(grub_reboot_args):
     reboot_command = molly_command("reboot")
 
     if DEVELOPMENT_MODE:
-        print("pkexec grub-reboot '{}' && sleep 1 && pkexec {}".format(grub_reboot_value, reboot_command))
+        print("pkexec grub-reboot '{}' && sleep 1 && pkexec {}".format(grub_reboot_args, reboot_command))
     if not DEVELOPMENT_MODE:
-        os.system("pkexec grub-reboot '{}' && sleep 1 && pkexec {}".format(grub_reboot_value, reboot_command))
+        os.system("pkexec grub-reboot '{}' && sleep 1 && pkexec {}".format(grub_reboot_args, reboot_command))
+
 
 def do_shutdown(_):
     shutdown_command = molly_command("shutdown")
