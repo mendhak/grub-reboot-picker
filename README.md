@@ -31,7 +31,7 @@ You can also launch it directly by searching for `Grub Reboot Picker` in Activit
 
 ## Use it
 
-Click on the application icon.  
+Click on the application icon. <img src="./assets/grub-reboot-picker.svg" width="20" height="20" />  
 A menu with grub entries will appear.  
 Click one of the entries.  
 After a moment, Ubuntu will reboot.  
