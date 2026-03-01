@@ -37,6 +37,15 @@ Click one of the entries.
 After a moment, Ubuntu will reboot.  
 The grub menu item you chose should be preselected. 
 
+### View logs
+
+If necessary for troubleshooting, you can view logs using `journalctl` as shown here:
+
+```
+journalctl -r -t grub-reboot-picker
+```
+
+This will show the logs in reverse order, the most recent log entry will be on top. 
 
 ## TODO
 
@@ -65,11 +74,18 @@ Clone this repo, then run the python script.
 
 ```
 cd grub-reboot-picker
-sudo ./grub-reboot-picker.py
+./grub-reboot-picker.py
 ```
 
 You'll get prompted because the script wants to run `grub-mkconfig` which generates the grub config output. 
 Alternatively run the script with sudo so that you don't get prompted.  
+
+To view the logs, use `journalctl` as shown here:
+
+```
+journalctl -r -t grub-reboot-picker.py
+```
+
 
 ### Running it with molly-guard
 
