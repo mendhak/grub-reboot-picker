@@ -3,6 +3,8 @@ import gi
 import os
 import re
 import subprocess
+import syslog
+import json
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 
@@ -16,6 +18,15 @@ except (ValueError, ImportError):
 
 SHOW_GRUB_MENU_SUB_MENUS = True
 DEVELOPMENT_MODE = os.environ.get("DEBUG", False)
+
+
+def log(message, level=syslog.LOG_INFO):
+    """Log to both syslog and console  
+       View it in syslog with: journalctl -t grub-reboot-picker  
+       But if running locally, journalctl -t grub-reboot-picker.py  
+    """
+    syslog.syslog(level, message)
+    print(message)
 
 
 def get_all_grub_entries(include_submenus=True):
@@ -140,7 +151,8 @@ def build_menu():
     grub_entries = get_all_grub_entries(SHOW_GRUB_MENU_SUB_MENUS)
     grub_entries_with_args = get_grub_entries_with_args(grub_entries.items())
 
-    print(grub_entries_with_args)
+    log("Grub entries with args:")
+    log(json.dumps(grub_entries_with_args, indent=2))
 
     menu_item_memory_test = Gtk.MenuItem(label="Memory Test")
     sub_menu_memory_test = Gtk.Menu()
@@ -195,17 +207,43 @@ def molly_command(command):
 def do_grub_reboot(_, grub_reboot_args):
     reboot_command = molly_command("reboot")
 
-    print("pkexec grub-reboot '{}' && sleep 1 && pkexec {}".format(grub_reboot_args, reboot_command))
+
+    log(f"""Commands to run:
+    pkexec grub-reboot '{grub_reboot_args}'
+    sleep 3
+    pkexec {reboot_command}
+    """)
+    
     if not DEVELOPMENT_MODE:
-        os.system("pkexec grub-reboot '{}' && sleep 1 && pkexec {}".format(grub_reboot_args, reboot_command))
+        try:
+
+            if os.path.exists("/boot/grub/grubenv"):
+                grubenv_mtime = os.path.getmtime("/boot/grub/grubenv")
+                log(f"grubenv mtime before: {grubenv_mtime}")
+
+            subprocess.run(["pkexec", "grub-reboot", grub_reboot_args], check=True)
+            subprocess.run(["sleep", "3"], check=True)
+
+            if os.path.exists("/boot/grub/grubenv"):
+                grubenv_mtime_after = os.path.getmtime("/boot/grub/grubenv")
+                log(f"grubenv mtime after: {grubenv_mtime_after}")
+
+            subprocess.run(["pkexec", reboot_command], check=True)
+        except subprocess.CalledProcessError as e:
+            log(f"Error during subprocess: {e}", syslog.LOG_ERR)
 
 
 def do_shutdown(_):
     shutdown_command = molly_command("shutdown")
 
-    print("sleep 1 && pkexec {} -h now".format(shutdown_command))
+    log(f"Command: pkexec {shutdown_command} -h now")
+    
     if not DEVELOPMENT_MODE:
-        os.system("sleep 1 && pkexec {} -h now".format(shutdown_command))
+        try:
+            subprocess.run(["sleep", "1"], check=True)
+            subprocess.run(["pkexec", shutdown_command, "-h", "now"], check=True)
+        except subprocess.CalledProcessError as e:
+            log(f"Error during subprocess: {e}", syslog.LOG_ERR)
 
 
 def quit(_):
