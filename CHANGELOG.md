@@ -32,3 +32,4 @@
   The memory test items are now grouped together.
 
   * 0.0.12 (2026-03-01): Systemd logging support
+  Records grubenv mtime for debugging purposes.
