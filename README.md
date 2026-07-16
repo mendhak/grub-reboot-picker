@@ -8,7 +8,7 @@ Basically it's a wrapper around `grub-reboot`.
 
 ## Install it
 
-You can apt install it [from the PPA](https://launchpad.net/~mendhak/+archive/ubuntu/ppa).
+You can apt install it [from the PPA](https://launchpad.net/~mendhak/+archive/ubuntu/ppa). This should work on recent releases of Ubuntu and Linux Mint.
 
 ```
 sudo add-apt-repository ppa:mendhak/ppa
@@ -19,13 +19,13 @@ sudo apt install grub-reboot-picker
 You can also download the .deb file from the Releases page and install it.
 
 ```
-sudo apt install ./grub-reboot-picker_0.0.10+noble_all.deb 
+sudo apt install ./grub-reboot-picker_0.0.12+noble_all.deb 
 ```
 
 
 ## Run it
 
-The application will auto start the next time you log in to Ubuntu.  
+The application will auto start the next time you log in to Ubuntu/Mint.  
 You can also launch it directly by searching for `Grub Reboot Picker` in Activities
 
 
@@ -219,6 +219,16 @@ debuild -S -sa
 dput ppa:mendhak/ppa ../grub-reboot-picker_${version}_source.changes
 ```
 
+## Publishing to Github Releases
+
+There is a Github action that will build and upload to Github releases, it just needs a tag to be created. 
+
+```
+git tag -s v0.0.12 -m "Release v0.0.12"
+git push origin --tags 
+```
+
+Once the tag is pushed, Github Actions should publish it to the [Releases](https://github.com/mendhak/grub-reboot-picker/releases). 
 
 ## Application structure
 
