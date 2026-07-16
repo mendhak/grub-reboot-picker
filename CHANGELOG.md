@@ -32,4 +32,6 @@
   The memory test items are now grouped together.
 
   * 0.0.12 (2026-03-01): Systemd logging support
-  Records grubenv mtime for debugging purposes.
+  Log the startup JSON
+  Log the action selected just before reboot
+  Log the grubenv mtime for troubleshooting purposes
