@@ -193,57 +193,38 @@ def build_menu():
     return menu
 
 
-# Returns the correct version of the given command, depending on whether
-# molly-guard is installed.
-def molly_command(command):
-    molly_command = "/sbin/{}.no-molly-guard".format(command)
-    if os.path.exists(molly_command):
-        return molly_command
-    else:
-        # Maybe this should return "/sbin/command"
-        return command
-
-
 def do_grub_reboot(_, grub_reboot_args):
-    reboot_command = molly_command("reboot")
-
-
-    log(f"""Commands to run:
-    pkexec grub-reboot '{grub_reboot_args}'
-    sleep 3
-    pkexec {reboot_command}
-    """)
+    log(f"Commands to run: pkexec grub-reboot '{grub_reboot_args}', sleep 1, systemctl reboot -i")
     
     if not DEVELOPMENT_MODE:
         try:
-
             if os.path.exists("/boot/grub/grubenv"):
-                grubenv_mtime = os.path.getmtime("/boot/grub/grubenv")
-                log(f"grubenv mtime before: {grubenv_mtime}")
+                log(f"grubenv mtime before: {os.path.getmtime('/boot/grub/grubenv')}")
 
             subprocess.run(["pkexec", "grub-reboot", grub_reboot_args], check=True)
-            subprocess.run(["sleep", "3"], check=True)
+            subprocess.run(["sleep", "1"], check=True)
 
             if os.path.exists("/boot/grub/grubenv"):
-                grubenv_mtime_after = os.path.getmtime("/boot/grub/grubenv")
-                log(f"grubenv mtime after: {grubenv_mtime_after}")
+                log(f"grubenv mtime after: {os.path.getmtime('/boot/grub/grubenv')}")
 
-            subprocess.run(["pkexec", reboot_command], check=True)
+            subprocess.run(["systemctl", "reboot", "-i"], check=True)
         except subprocess.CalledProcessError as e:
-            log(f"Error during subprocess: {e}", syslog.LOG_ERR)
+            log(f"CalledProcessError: cmd={e.cmd}, ret={e.returncode}", syslog.LOG_ERR)
+        except Exception as e:
+            log(f"Unexpected error during reboot: {e}", syslog.LOG_ERR)
 
 
 def do_shutdown(_):
-    shutdown_command = molly_command("shutdown")
-
-    log(f"Command: pkexec {shutdown_command} -h now")
+    log("Command: systemctl poweroff -i")
     
     if not DEVELOPMENT_MODE:
         try:
             subprocess.run(["sleep", "1"], check=True)
-            subprocess.run(["pkexec", shutdown_command, "-h", "now"], check=True)
+            subprocess.run(["systemctl", "poweroff", "-i"], check=True)
         except subprocess.CalledProcessError as e:
-            log(f"Error during subprocess: {e}", syslog.LOG_ERR)
+            log(f"CalledProcessError: cmd={e.cmd}, ret={e.returncode}", syslog.LOG_ERR)
+        except Exception as e:
+            log(f"Unexpected error during shutdown: {e}", syslog.LOG_ERR)
 
 
 def quit(_):
