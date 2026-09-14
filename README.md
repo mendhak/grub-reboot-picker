@@ -87,27 +87,6 @@ journalctl -r -t grub-reboot-picker.py
 ```
 
 
-### Running it with molly-guard
-
-molly-guard is a package that prompts you before reboot/shutdown, preventing accidental reboots. 
-This script will run the .no-molly-guard version of reboot/shutdown to bypass molly-guard.  
-
-To test it locally, need to install molly-guard then add two environment variables to /etc/environment. 
-
-```
-sudo apt install molly-guard
-echo "ALWAYS_QUERY_HOSTNAME=1" | sudo tee -a /etc/environment
-echo "PRETEND_SSH=1" | sudo tee -a /etc/environment
-```
-
-Then run the script as before
-
-```
-cd grub-reboot-picker
-sudo ./grub-reboot-picker.py
-```
-
-
 ## Building a distributable
 
 This project uses pybuild to create a .deb file. The pyproject.toml file holds the information needed to do the build, and there are additional configuration files in debian folder such as control, links, install, changelog. All of these get used by pybuild to create the .deb.  
@@ -245,8 +224,13 @@ The `com.mendhak.grubrebootpicker.desktop` file goes in two places.
 
 ### .policy file
 
-The `com.mendhak.grubrebootpicker.policy` is a [polkit policy file](https://wiki.archlinux.org/index.php/Polkit) goes in `/usr/share/polkit-1/actions/`.  
-This in turn allows the application to run `pkexec reboot` without a password prompt.  
+The `com.mendhak.grubrebootpicker.policy` is a [polkit policy file](https://wiki.archlinux.org/index.php/Polkit) that goes in `/usr/share/polkit-1/actions/`.  
+This allows the application to run `pkexec grub-reboot` and `pkexec grub-mkconfig` without a password prompt.  
+
+### .rules file
+
+The `com.mendhak.grubrebootpicker.rules` is a [polkit rules file](https://wiki.archlinux.org/index.php/Polkit#Authorization_rules) that goes in `/usr/share/polkit-1/rules.d/`.  
+This allows members of administrative groups (`sudo`, `wheel`, `admin`) to reboot and power off via `systemctl reboot` and `systemctl poweroff` without a password prompt even when session inhibitor locks exist.
 
 ### The script
 
