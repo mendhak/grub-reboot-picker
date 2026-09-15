@@ -35,3 +35,9 @@
   Log the startup JSON
   Log the action selected just before reboot
   Log the grubenv mtime for troubleshooting purposes
+
+  * 0.0.13 (2026-09-15): Use systemctl for reboot, shutdown
+  Using systemctl instead of pkexec for reboot, shutdown
+  Using a polkit rule for passwordless reboot
+  Using a polkit rule for tighter, simpler control
+  Required due to changes in pkexec behaviour resolving real paths
