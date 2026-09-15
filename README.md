@@ -2,6 +2,7 @@
 
 This utility is an app indicator (tray icon) to help you reboot into other OSes, or UEFI/BIOS, or the same OS.  
 Instead of picking the OS you want during reboot at the grub menu, you can just preselect it from the menu here.  
+
 Basically it's a wrapper around `grub-reboot`. 
 
 I have tested it on Ubuntu, Linux Mint, Arch Linux. 
