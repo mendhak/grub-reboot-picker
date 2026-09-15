@@ -4,9 +4,13 @@ This utility is an app indicator (tray icon) to help you reboot into other OSes,
 Instead of picking the OS you want during reboot at the grub menu, you can just preselect it from the menu here.  
 Basically it's a wrapper around `grub-reboot`. 
 
+I have tested it on Ubuntu, Linux Mint, Arch Linux. 
+
 ![screenshot](assets/screenshot.png) 
 
 ## Install it
+
+### Ubuntu/Linux Mint
 
 You can apt install it [from the PPA](https://launchpad.net/~mendhak/+archive/ubuntu/ppa). This should work on recent releases of Ubuntu and Linux Mint.
 
@@ -22,6 +26,10 @@ You can also download the .deb file from the Releases page and install it.
 sudo apt install ./grub-reboot-picker_0.0.12+noble_all.deb 
 ```
 
+### Arch Linux
+
+There is an [Arch AUR too](https://aur.archlinux.org/packages/grub-reboot-picker). Thank you for creating it. 
+
 
 ## Run it
 
@@ -34,7 +42,7 @@ You can also launch it directly by searching for `Grub Reboot Picker` in Activit
 Click on the application icon. <img src="./assets/grub-reboot-picker.svg" width="20" height="20" />  
 A menu with grub entries will appear.  
 Click one of the entries.  
-After a moment, Ubuntu will reboot.  
+After a moment, the system will reboot.  
 The grub menu item you chose should be preselected. 
 
 ### View logs
@@ -47,7 +55,7 @@ journalctl -r -t grub-reboot-picker
 
 This will show the logs in reverse order, the most recent log entry will be on top. 
 
-## TODO
+## TODO/Wishlist
 
 Configuration file or Configuration screen: 
 * Top level or double level menu items
@@ -56,6 +64,8 @@ Configuration file or Configuration screen:
 StartupNotify = true might be causing 'wait' cursor to appear
 
 Run a single instance of the application
+
+Show 'Linux Mint' instead of 'Ubuntu' on Linux Mint. 
 
 
 
