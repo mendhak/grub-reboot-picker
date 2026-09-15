@@ -41,3 +41,4 @@
   Using a polkit rule for passwordless reboot
   Using a polkit rule for tighter, simpler control
   Required due to changes in pkexec behaviour resolving real paths
+  molly-guard no longer supported
