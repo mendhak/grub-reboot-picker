@@ -222,15 +222,11 @@ The `com.mendhak.grubrebootpicker.desktop` file goes in two places.
 `/etc/xdg/autostart/` -  ensures that the app is launched when the user logs in  
 `/usr/share/applications/` - ensures that the app can be found when searching through Activities. 
 
-### .policy file
-
-The `com.mendhak.grubrebootpicker.policy` is a [polkit policy file](https://wiki.archlinux.org/index.php/Polkit) that goes in `/usr/share/polkit-1/actions/`.  
-This allows the application to run `pkexec grub-reboot` and `pkexec grub-mkconfig` without a password prompt.  
 
 ### .rules file
 
 The `com.mendhak.grubrebootpicker.rules` is a [polkit rules file](https://wiki.archlinux.org/index.php/Polkit#Authorization_rules) that goes in `/usr/share/polkit-1/rules.d/`.  
-This allows members of administrative groups (`sudo`, `wheel`, `admin`) to reboot and power off via `systemctl reboot` and `systemctl poweroff` without a password prompt even when session inhibitor locks exist.
+This allows members of administrative groups (`sudo`, `wheel`, `admin`) to reboot and power off via `systemctl reboot` and `systemctl poweroff` without a password prompt even when session inhibitor locks exist. It also takes care of the systemctl reboot/poweroff commands. Have a look at the big list of action IDs in there. 
 
 ### The script
 
