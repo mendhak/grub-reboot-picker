@@ -1,0 +1,32 @@
+// /usr/share/polkit-1/rules.d/com.mendhak.grubrebootpicker.rules
+// Allow calling systemctl reboot or systemctl poweroff without a prompt. 
+
+polkit.addRule(function(action, subject) {
+    if (
+        (action.id === "org.freedesktop.login1.reboot" ||
+         action.id === "org.freedesktop.login1.reboot-multiple-sessions" ||
+         action.id === "org.freedesktop.login1.reboot-ignore-inhibit" ||
+         action.id === "org.freedesktop.login1.power-off" ||
+         action.id === "org.freedesktop.login1.power-off-multiple-sessions" ||
+         action.id === "org.freedesktop.login1.power-off-ignore-inhibit" ||
+         action.id === "org.freedesktop.login1.inhibit-block-shutdown" ||
+         action.id === "org.freedesktop.login1.inhibit-delay-shutdown" ||
+
+         (
+            action.id === "org.freedesktop.policykit.exec" && 
+            action.lookup("command_line") &&
+            (
+                action.lookup("command_line").indexOf("grub-reboot") !== -1 ||
+                action.lookup("command_line").indexOf("grub-mkconfig") !== -1
+            )
+         )
+         
+        ) 
+         
+        &&
+        
+        (subject.isInGroup("sudo") || subject.isInGroup("admin") || subject.isInGroup("wheel"))
+    ) {
+        return polkit.Result.YES;
+    }
+});

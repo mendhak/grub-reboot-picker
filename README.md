@@ -2,11 +2,16 @@
 
 This utility is an app indicator (tray icon) to help you reboot into other OSes, or UEFI/BIOS, or the same OS.  
 Instead of picking the OS you want during reboot at the grub menu, you can just preselect it from the menu here.  
+
 Basically it's a wrapper around `grub-reboot`. 
+
+I have tested it on Ubuntu, Linux Mint, Arch Linux. 
 
 ![screenshot](assets/screenshot.png) 
 
 ## Install it
+
+### Ubuntu/Linux Mint
 
 You can apt install it [from the PPA](https://launchpad.net/~mendhak/+archive/ubuntu/ppa). This should work on recent releases of Ubuntu and Linux Mint.
 
@@ -22,6 +27,10 @@ You can also download the .deb file from the Releases page and install it.
 sudo apt install ./grub-reboot-picker_0.0.12+noble_all.deb 
 ```
 
+### Arch Linux
+
+There is an [Arch AUR too](https://aur.archlinux.org/packages/grub-reboot-picker). Thank you for creating it. 
+
 
 ## Run it
 
@@ -34,7 +43,7 @@ You can also launch it directly by searching for `Grub Reboot Picker` in Activit
 Click on the application icon. <img src="./assets/grub-reboot-picker.svg" width="20" height="20" />  
 A menu with grub entries will appear.  
 Click one of the entries.  
-After a moment, Ubuntu will reboot.  
+After a moment, the system will reboot.  
 The grub menu item you chose should be preselected. 
 
 ### View logs
@@ -47,7 +56,7 @@ journalctl -r -t grub-reboot-picker
 
 This will show the logs in reverse order, the most recent log entry will be on top. 
 
-## TODO
+## TODO/Wishlist
 
 Configuration file or Configuration screen: 
 * Top level or double level menu items
@@ -56,6 +65,8 @@ Configuration file or Configuration screen:
 StartupNotify = true might be causing 'wait' cursor to appear
 
 Run a single instance of the application
+
+Show 'Linux Mint' instead of 'Ubuntu' on Linux Mint. 
 
 
 
@@ -84,27 +95,6 @@ To view the logs, use `journalctl` as shown here:
 
 ```
 journalctl -r -t grub-reboot-picker.py
-```
-
-
-### Running it with molly-guard
-
-molly-guard is a package that prompts you before reboot/shutdown, preventing accidental reboots. 
-This script will run the .no-molly-guard version of reboot/shutdown to bypass molly-guard.  
-
-To test it locally, need to install molly-guard then add two environment variables to /etc/environment. 
-
-```
-sudo apt install molly-guard
-echo "ALWAYS_QUERY_HOSTNAME=1" | sudo tee -a /etc/environment
-echo "PRETEND_SSH=1" | sudo tee -a /etc/environment
-```
-
-Then run the script as before
-
-```
-cd grub-reboot-picker
-sudo ./grub-reboot-picker.py
 ```
 
 
@@ -243,10 +233,11 @@ The `com.mendhak.grubrebootpicker.desktop` file goes in two places.
 `/etc/xdg/autostart/` -  ensures that the app is launched when the user logs in  
 `/usr/share/applications/` - ensures that the app can be found when searching through Activities. 
 
-### .policy file
 
-The `com.mendhak.grubrebootpicker.policy` is a [polkit policy file](https://wiki.archlinux.org/index.php/Polkit) goes in `/usr/share/polkit-1/actions/`.  
-This in turn allows the application to run `pkexec reboot` without a password prompt.  
+### .rules file
+
+The `com.mendhak.grubrebootpicker.rules` is a [polkit rules file](https://wiki.archlinux.org/index.php/Polkit#Authorization_rules) that goes in `/usr/share/polkit-1/rules.d/`.  
+This allows members of administrative groups (`sudo`, `wheel`, `admin`) to reboot and power off via `systemctl reboot` and `systemctl poweroff` without a password prompt even when session inhibitor locks exist. Have a look at the big list of action IDs in there. 
 
 ### The script
 
