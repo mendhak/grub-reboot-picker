@@ -37,8 +37,6 @@
   Log the grubenv mtime for troubleshooting purposes
 
   * 0.0.13 (2026-09-15): Use systemctl for reboot, shutdown
-  Using systemctl instead of pkexec for reboot, shutdown
-  Using a polkit rule for passwordless reboot
-  Using a polkit rule for tighter, simpler control
-  Required due to changes in pkexec behaviour resolving real paths
-  molly-guard no longer supported
+  Switched reboot, shutdown from pkexec to systemctl
+  New polkit rules for tighter and simpler control
+  Required due to changes in pkexec path resolution behaviour
