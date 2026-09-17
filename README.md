@@ -1,9 +1,9 @@
 # Grub Reboot Picker  [![CI](https://github.com/mendhak/grub-reboot-picker/workflows/CI/badge.svg)](https://github.com/mendhak/grub-reboot-picker/actions)
 
-This utility is an app indicator (tray icon) to help you reboot into other OSes, or UEFI/BIOS, or the same OS.  
-Instead of picking the OS you want during reboot at the grub menu, you can just preselect it from the menu here.  
+This utility is an app indicator (tray icon) to help you reboot into other OSes, or UEFI/BIOS, or the same OS.
+Instead of picking the OS you want during reboot at the grub menu, you can just preselect it from the menu here.
 
-Basically it's a wrapper around `grub-reboot`. 
+Behind the scenes, it calls `grub-reboot`.
 
 I have tested it on Ubuntu, Linux Mint, Arch Linux. 
 
@@ -21,7 +21,7 @@ sudo apt update
 sudo apt install grub-reboot-picker
 ```
 
-You can also download the .deb file from the Releases page and install it.
+You can also download the .deb file from the [Github Releases](https://github.com/mendhak/grub-reboot-picker/releases) and install it.
 
 ```
 sudo apt install ./grub-reboot-picker_0.0.12+noble_all.deb 
@@ -40,10 +40,10 @@ You can also launch it directly by searching for `Grub Reboot Picker` in Activit
 
 ## Use it
 
-Click on the application icon. <img src="./assets/grub-reboot-picker.svg" width="20" height="20" />  
-A menu with grub entries will appear.  
-Click one of the entries.  
-After a moment, the system will reboot.  
+Click on the application icon. <img src="./assets/grub-reboot-picker.svg" width="20" height="20" />
+A menu with grub entries will appear.
+Click one of the entries.
+After a moment, the system will reboot.
 The grub menu item you chose should be preselected. 
 
 ### View logs
@@ -60,14 +60,13 @@ This will show the logs in reverse order, the most recent log entry will be on t
 
 Configuration file or Configuration screen: 
 * Top level or double level menu items
-* Nicknames for menu items  
+* Nicknames for menu items
 
 StartupNotify = true might be causing 'wait' cursor to appear
 
 Run a single instance of the application
 
 Show 'Linux Mint' instead of 'Ubuntu' on Linux Mint. 
-
 
 
 ## Running it locally from this repo
@@ -84,8 +83,9 @@ sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-3.0 gir1.2-appindicator3
 Clone this repo, then run the python script. 
 
 ```
+git clone https://github.com/mendhak/grub-reboot-picker.git
 cd grub-reboot-picker
-./grub-reboot-picker.py
+./grub-reboot-picker/grub-reboot-picker.py
 ```
 
 You'll get prompted because the script wants to run `grub-mkconfig` which generates the grub config output. 
